@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+
+/*==== GENERAL STYLES ==== */
+
+* {
+  box-sizing: border-box;
+  
+}
+
+html {
+  font-size: calc(1rem + .2vw);
+}
+
+h1 {
+	font-family: Libre;
+	font-size: 2rem;
+}
