@@ -1,9 +1,7 @@
-package com.eftomi.tcp.model;
+package com.eftomi.tcp.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,19 +17,19 @@ public class Box {
 	private int boxesInRow;
 	private int rowsOnPallet;
 	private double boxWeight;
-	@OneToMany(mappedBy = "box", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "box")
 	private List<Item> items;
 	
-	public Box(String boxType, int boxesInRow, int rowsOnPallet, double boxWeight, List<Item> items) {
+	public Box(String boxType, int boxesInRow, int rowsOnPallet, double boxWeight) {
 		super();
 		this.boxType = boxType;
 		this.boxesInRow = boxesInRow;
 		this.rowsOnPallet = rowsOnPallet;
 		this.boxWeight = boxWeight;
-		this.items = items;
 	}
+	
+	public Box() {}
 
-	@Column(name = "box_type")
 	public String getBoxType() {
 		return boxType;
 	}
@@ -40,7 +38,6 @@ public class Box {
 		this.boxType = boxType;
 	}
 
-	@Column(name = "boxes_in_row")
 	public int getBoxesInRow() {
 		return boxesInRow;
 	}
@@ -49,7 +46,6 @@ public class Box {
 		this.boxesInRow = boxesInRow;
 	}
 
-	@Column(name = "rows_on_pallet")
 	public int getRowsOnPallet() {
 		return rowsOnPallet;
 	}
@@ -58,7 +54,6 @@ public class Box {
 		this.rowsOnPallet = rowsOnPallet;
 	}
 
-	@Column(name = "box_weight")
 	public double getBoxWeight() {
 		return boxWeight;
 	}
@@ -74,6 +69,6 @@ public class Box {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-	
+
 	
 }

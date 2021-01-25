@@ -1,9 +1,7 @@
-package com.eftomi.tcp.model;
+package com.eftomi.tcp.entity;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,7 +17,7 @@ public class Pallet {
 	private double palletWeight;
 	private double roofWeight;
 	private boolean stackable;
-	@OneToMany(mappedBy = "pallet", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "pallet")
 	private List<Item> items;
 	
 	public Pallet(String palletType, double palletWeight, double roofWeight, boolean stackable) {
@@ -29,8 +27,9 @@ public class Pallet {
 		this.roofWeight = roofWeight;
 		this.stackable = stackable;
 	}
+	
+	public Pallet() {}
 
-	@Column(name = "pallet_type")
 	public String getPalletType() {
 		return palletType;
 	}
@@ -39,7 +38,6 @@ public class Pallet {
 		this.palletType = palletType;
 	}
 
-	@Column(name = "pallet_weight")
 	public double getPalletWeight() {
 		return palletWeight;
 	}
@@ -48,7 +46,6 @@ public class Pallet {
 		this.palletWeight = palletWeight;
 	}
 
-	@Column(name = "roof_weight")
 	public double getRoofWeight() {
 		return roofWeight;
 	}
