@@ -22,40 +22,83 @@
 	<link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-	<nav class="navbar fixed-top navbar-never-expand navbar-light">
-		<div class="fluid-container">
-			<button class="navbar-toggler menu_button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				<div class="navbar-nav nav_link_background">
-					<a class="nav-link" th:href="@{/stock_nav}">Stock</a>
-					<a class="nav-link" th:href="@{/other_nav}">Other</a>
-					<a class="nav-link" href="#project">Own Project</a>
-					<a class="nav-link" th:href="@{/logout}">Logout</a>
+
+	<section th:if="${menuNav}">
+		<nav class="navbar fixed-top navbar-never-expand navbar-light">
+			<div class="fluid-container">
+				<button class="navbar-toggler menu_button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav nav_link_background">
+						<a class="nav-link" th:href="@{/packagingInstruction}">Packaging Instruction</a>
+						<a class="nav-link" th:href="@{/deliveryNoteCreate}">Delivery Note Create</a>
+						<a class="nav-link" href="#project">Own Project</a>
+						<a class="nav-link" th:href="@{/logout}">Logout</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</section>
+
+	<section th:if="${packagingInstructionNav}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<table class="table table-striped">
+						<tr>
+							<th>No</th>
+							<th>Item number</th>
+							<th>Pallet type</th>
+							<th>Box type</th>
+							<th>Pcs in box</th>
+							<th>Boxes in row</th>
+							<th>Rows on pallet</th>
+							<th>Pallet stackable</th>
+						</tr>
+						<tr th:object="${pack}" th:each="pack,stat : ${packagingInstruction}">
+							<td><span th:text="${stat.count}">1</span></td>
+							<td><span th:text="*{itemNo}">Nr0001</span></td>
+							<td><span th:text="*{palletType}">Nr0001</span></td>
+							<td><span th:text="*{boxType}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{pcsInBox}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{boxesInRow}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{rowsOnPallet}">Nr0001</span></td>
+							<td><span th:text="*{stackable}">Nr0001</span></td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
-	</nav>
-
-	<section th:if="${stock_nav == true}">
-		<table class="table table-striped">
-			<tr>
-				<th>No</th>
-				<th>Type</th>
-				<th>Boxes in row</th>
-				<th>Rows on pallet</th>
-				<th>Box weight</th>
-			</tr>
-			<tr th:object="${item}" th:each="item,stat : ${itemList}">
-				<td><span th:text="${stat.count}">1</span></td>
-				<td><span th:text="*{itemNo}">Nr0001</span></td>
-				<td><span th:text="*{pallet.palletType}">Box Type</span></td>
-				<td><span th:text="*{box.boxWeight}">Boxes in row</span></td>
-				<!-- td><span th:text="*{rowsOnPallet}">Rows on pallet</span></td>
-				<td><span th:text="*{boxWeight}">Box weight</span></td-->
-			</tr>
-		</table>
+	</section>
+	
+	<section th:if="${deliveryNoteCreateNav}" id="delivery_note_create">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+				<h3>Please select the item numbers of products to be delivered!</h3>
+					<form action="#" th:action="@{/deliveryNoteCreate}" th:object="${itemNumberSetDTO}" method="post">
+					<ul>
+						<li th:each="iMap : ${itemMap}">
+							<input type="checkbox" th:field="*{itemNumberSet}" th:value="${iMap.key}">
+							<label for="${#ids.next('iMap')}" th:text="${iMap.value}">NR0001</label>
+						</li>
+					</ul>
+						<input type="submit" value="Submit">
+					</form>
+					<div th:if="list != """>
+						<h3>You have selected out the following items for shipping:</h3>
+							<span th:text="${list}"></span>
+						<h3>If you want to deliver these goods, please click the button above otherwise repeat the selection process!</h3>
+					</div>
+				</div>
+			</div>
+		</div>
 	</section>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>

@@ -1,6 +1,7 @@
 package com.eftomi.tcp.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.eftomi.tcp.dto.ItemNumberSetDTO;
 import com.eftomi.tcp.dto.LoginDTO;
 import com.eftomi.tcp.dto.RegistrationDTO;
 import com.eftomi.tcp.entity.Box;
@@ -70,7 +72,10 @@ public class MainController {
 	
 	@GetMapping("/index")
 	public String index(Model model) {
+		model.addAttribute("menuNav", true);
+		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("stock_nav", false);
+		model.addAttribute("deliveryNoteCreateNav", false);
 		return "index";
 	}
 	
@@ -81,17 +86,47 @@ public class MainController {
 		return "Helló Belló";
 	}
 	
-	@GetMapping("/stock_nav")
-	public String stock(Model model) {
-		List<Item> itemList = cargoService.getAllItems();
-		model.addAttribute("itemList", itemList);
-		model.addAttribute("stock_nav", true);
+	@GetMapping("/packagingInstruction")
+	public String packagingInstruction(Model model) {
+		model.addAttribute("menuNav", true);
+		model.addAttribute("packagingInstructionNav", true);
+		model.addAttribute("deliveryNoteCreateNav", false);	
+		
+		model.addAttribute("packagingInstruction", cargoService.packagingInstruction());
+		return "index";
+	}
+	
+	@GetMapping("/deliveryNoteCreate")
+	public String deliveryNoteCreate(Model model) {
+		model.addAttribute("menunNav", false);
+		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("deliveryNoteCreateNav", true);		
+		
+		model.addAttribute("itemMap", cargoService.getItemNumberMap());
+		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
+		return "index";
+	}
+	
+	@PostMapping("/deliveryNoteCreate")
+	public String deliveryNoteCreate(Model model, ItemNumberSetDTO itemNumberSetDTO) {
+		model.addAttribute("menunNav", false);
+		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("deliveryNoteCreateNav", true);		
+		
+		
+		String list = itemNumberSetDTO.getItemNumberSet().stream()
+				.map(n -> String.valueOf(n))
+				.collect(Collectors.joining(", "));
+		model.addAttribute("list", list);
+		model.addAttribute("itemMap", cargoService.getItemNumberMap());
+		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
 		return "index";
 	}
 	
 	@GetMapping("/other_nav")
 	public String other(Model model) {
-		model.addAttribute("stock_nav", false);
+		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("deliveryNoteCreateNav", false);
 		return "index";
 	}
 

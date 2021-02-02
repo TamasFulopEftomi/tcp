@@ -9,6 +9,7 @@
 
 html {
   font-size: calc(1rem + .2vw);
+  height: 100%;
 }
 
 .height_100 {
@@ -22,12 +23,6 @@ html {
   border-radius: 0.3125rem;
   padding: 1rem;
   margin: 1rem 0;
-}
-
-.box {
-  /*width: 30rem;
-  height: 30rem;*/
-  background-color: green;
 }
 
 /* ==== MENU STYLE ==== */
@@ -71,3 +66,7 @@ button {
   }
 }
 
+
+.delivery_note_create li {
+	display: inline;
+}
