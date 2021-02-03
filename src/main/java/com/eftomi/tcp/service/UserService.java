@@ -26,4 +26,8 @@ public class UserService {
 		Optional<User> optUser = userDAO.findByEmailAndPassword(email, password);
 		return optUser.isPresent();
 	}
+
+	public Optional<User> getUser(String email) {
+		return userDAO.findByEmail(email);
+	}
 }

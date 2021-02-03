@@ -41,6 +41,12 @@
 		</nav>
 	</section>
 
+	<section>
+		<header>
+			<span>You are logged in as: </span><span th:text="${username}"></span>
+		</header>
+	</section>
+	
 	<section th:if="${packagingInstructionNav}">
 		<div class="container">
 			<div class="row">
@@ -77,12 +83,12 @@
 		</div>
 	</section>
 	
-	<section th:if="${deliveryNoteCreateNav}" id="delivery_note_create">
+	<section th:if="${deliveryNoteCreateSelectNav}" id="delivery_note_create">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 mx-auto">
-				<h3>Please select the item numbers of products to be delivered!</h3>
-					<form action="#" th:action="@{/deliveryNoteCreate}" th:object="${itemNumberSetDTO}" method="post">
+				<h3>Please select the item numbers of products to be delivered and click the Submit button below!</h3>
+					<form action="#" th:action="@{/deliveryNoteCreateSelect}" th:object="${itemNumberSetDTO}" method="post">
 					<ul>
 						<li th:each="iMap : ${itemMap}">
 							<input type="checkbox" th:field="*{itemNumberSet}" th:value="${iMap.key}">
@@ -91,11 +97,53 @@
 					</ul>
 						<input type="submit" value="Submit">
 					</form>
-					<div th:if="list != """>
+					<div th:if="${list}">
 						<h3>You have selected out the following items for shipping:</h3>
 							<span th:text="${list}"></span>
-						<h3>If you want to deliver these goods, please click the button above otherwise repeat the selection process!</h3>
+						<h3>If you want to deliver these goods please click the Next button to add quantities to the list, otherwise repeat the selection process!</h3>
+						<form th:action="@{/deliveryNoteCreateQuantity}">
+							<input type="submit" value="Next"/>
+						</form>
 					</div>
+					<form th:action="@{/index}">
+						<input type="submit" value="Back to main page"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section th:if="${deliveryNoteCreateQuantityNav}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+
+					<table class="table table-striped">
+						<tr>
+							<th>No</th>
+							<th>Item number</th>
+							<th>Quantity required</th>
+							<th>Quantity modification</th>
+						</tr>
+						<tr th:object="${item}" th:each="itemNo,stat : ${deliveryNote}">
+							<td><span th:text="${stat.count}">1</span></td>
+							<td><span th:text="*{itemNumber}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{quantity}">0</span></td>
+							<td><form th:action="@{/modify(id=${event.id})}"><input type="submit" value="Modify"/></form></td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</table>
+					
+					<form th:action="@{/deliveryNoteCreate}">
+						<input type="submit" value="Back to selection process"/>
+					</form>
+					<form th:action="@{/index}">
+						<input type="submit" value="Back to main page"/>
+					</form>
 				</div>
 			</div>
 		</div>

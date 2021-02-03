@@ -70,6 +70,5 @@ public class Item {
 		this.pallet = pallet;
 	}
 	
-	
 
 }
