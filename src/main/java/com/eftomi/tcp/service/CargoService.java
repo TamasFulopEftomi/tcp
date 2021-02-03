@@ -56,12 +56,16 @@ public class CargoService {
 
 	public void createDeliveryNote(Set<String> itemNumberSet) {
 		for (String itemNumber : itemNumberSet) {
-			cargoItemDAO.save(new CargoItem(itemNumber));
+			cargoItemDAO.save(new CargoItem(itemNumber, 0));
 		}
-		
 	}
 	
 	public Iterable<CargoItem> getAllCargoItems() {
 		return cargoItemDAO.findAll();
+	}
+
+	public void clearCargoItem() {
+		cargoItemDAO.deleteAll();
+		
 	}
 }

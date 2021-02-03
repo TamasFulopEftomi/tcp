@@ -110,6 +110,7 @@ public class MainController {
 		model.addAttribute("deliveryNoteCreateSelectNav", true);
 		model.addAttribute("deliveryNoteCreateQuantity", false);
 		
+		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
 		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
 		return "index";
@@ -135,7 +136,7 @@ public class MainController {
 		return "index";
 	}
 	
-	@GetMapping("/deliveryNoteCreateQuantity")
+	@PostMapping("/deliveryNoteCreateQuantity")
 	public String deliveryNoteCreateQuantity(Model model, HttpSession session ) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
@@ -146,7 +147,7 @@ public class MainController {
 		
 		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
 		cargoService.createDeliveryNote(itemNumberSetDTO.getItemNumberSet());
-		List<CargoItem> deliveryNote = (List<CargoItem>) cargoService.getAllCargoItems();
+		Iterable<CargoItem> deliveryNote = cargoService.getAllCargoItems();
 		model.addAttribute("deliveryNote", deliveryNote);
 		return "index";
 	}

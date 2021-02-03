@@ -101,7 +101,7 @@
 						<h3>You have selected out the following items for shipping:</h3>
 							<span th:text="${list}"></span>
 						<h3>If you want to deliver these goods please click the Next button to add quantities to the list, otherwise repeat the selection process!</h3>
-						<form th:action="@{/deliveryNoteCreateQuantity}">
+						<form th:action="@{/deliveryNoteCreateQuantity}" method="post">
 							<input type="submit" value="Next"/>
 						</form>
 					</div>
@@ -125,11 +125,11 @@
 							<th>Quantity required</th>
 							<th>Quantity modification</th>
 						</tr>
-						<tr th:object="${item}" th:each="itemNo,stat : ${deliveryNote}">
+						<tr th:object="${itemNo}" th:each="itemNo,stat : ${deliveryNote}">
 							<td><span th:text="${stat.count}">1</span></td>
 							<td><span th:text="*{itemNumber}">Nr0001</span></td>
-							<td class="text-end"><span th:text="*{quantity}">0</span></td>
-							<td><form th:action="@{/modify(id=${event.id})}"><input type="submit" value="Modify"/></form></td>
+							<td class="text-end"><span th:text="*{qtyNeeds}">0</span></td>
+							<td class="text-center"><form th:action="@{/modify(id=${id})}"><input type="submit" value="Modify"/></form></td>
 						</tr>
 						<tr th:remove="all">
 							<td>2</td>

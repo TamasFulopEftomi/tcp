@@ -29,8 +29,9 @@ public class CargoItem {
 		super();
 	}
 	
-	public CargoItem(String itemNumber) {
+	public CargoItem(String itemNumber, Integer qtyNeeds) {
 		this.itemNumber = itemNumber;
+		this.qtyNeeds = qtyNeeds;
 	}
 
 	public String getItemNumber() {
