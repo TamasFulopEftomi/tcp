@@ -125,11 +125,11 @@
 							<th>Quantity required</th>
 							<th>Quantity modification</th>
 						</tr>
-						<tr th:object="${itemNo}" th:each="itemNo,stat : ${deliveryNote}">
+						<tr th:object="${item}" th:each="item,stat : ${deliveryNote}">
 							<td><span th:text="${stat.count}">1</span></td>
 							<td><span th:text="*{itemNumber}">Nr0001</span></td>
 							<td class="text-end"><span th:text="*{qtyNeeds}">0</span></td>
-							<td class="text-center"><form th:action="@{/modify(id=${id})}"><input type="submit" value="Modify"/></form></td>
+							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Modify"/></form></td>
 						</tr>
 						<tr th:remove="all">
 							<td>2</td>
@@ -149,6 +149,24 @@
 		</div>
 	</section>
 
+	<section th:if="${modifyQuantityNav}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+				<h2>Details of drink</h2>
+				<form th:action="@{/modityCargoItem}" th:object="${cargoItem}" method="POST">
+					<input type="hidden" th:field="*{id}">
+					<label for="itemNumber">Item Number:</label>
+					<input type="text" th:field="*{itemNumber}"><br>
+					<label for="quantity">Quantity:</label>
+					<input type="text" th:field="*{qtyNeeds}"><br>
+					<input type="submit" value="Send">
+				</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

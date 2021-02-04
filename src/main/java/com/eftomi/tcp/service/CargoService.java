@@ -3,6 +3,7 @@ package com.eftomi.tcp.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -10,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eftomi.tcp.dto.PackagingInstructionDTO;
+import com.eftomi.tcp.entity.Cargo;
 import com.eftomi.tcp.entity.CargoItem;
 import com.eftomi.tcp.entity.Item;
 import com.eftomi.tcp.repository.CargoItemRepository;
 import com.eftomi.tcp.repository.ItemRepository;
+import com.eftomi.tcp.service.exception.CargoItemNotFoundException;
 
 @Service
 public class CargoService {
@@ -56,7 +59,7 @@ public class CargoService {
 
 	public void createDeliveryNote(Set<String> itemNumberSet) {
 		for (String itemNumber : itemNumberSet) {
-			cargoItemDAO.save(new CargoItem(itemNumber, 0));
+			cargoItemDAO.save(new CargoItem(itemNumber, 0, 0));
 		}
 	}
 	
@@ -67,5 +70,36 @@ public class CargoService {
 	public void clearCargoItem() {
 		cargoItemDAO.deleteAll();
 		
+	}
+	
+	public Optional<CargoItem> getCargoItem(int id) {
+		return cargoItemDAO.findById(id);
+	}
+	
+	public CargoItem update(CargoItem cargoItem) {
+		Optional<CargoItem> optDbCargoItem = cargoItemDAO.findById(cargoItem.getId());
+		if (optDbCargoItem.isPresent()) {
+			CargoItem dbCargoItem = optDbCargoItem.get();
+			dbCargoItem.setItemNumber(cargoItem.getItemNumber());
+			dbCargoItem.setQtyNeeds(cargoItem.getQtyNeeds());
+			return cargoItemDAO.save(dbCargoItem);
+		} else {
+			throw new CargoItemNotFoundException(cargoItem.getId());
+		}
+
+	}
+	
+	
+	public void calculateQtyToBeDelivered(List<CargoItem> cargoItems) {
+		for (CargoItem cargoItem : cargoItems) {
+			
+		}
+	}
+	
+	public Cargo calculateCargo(List<CargoItem> cargoItems) {
+		for (CargoItem cargoItem : cargoItems) {
+			
+		}
+		return null;
 	}
 }

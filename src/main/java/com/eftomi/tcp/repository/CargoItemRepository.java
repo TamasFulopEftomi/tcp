@@ -9,5 +9,5 @@ import com.eftomi.tcp.entity.CargoItem;
 
 @Repository
 public interface CargoItemRepository extends CrudRepository<CargoItem, Integer>{
-	
+
 }

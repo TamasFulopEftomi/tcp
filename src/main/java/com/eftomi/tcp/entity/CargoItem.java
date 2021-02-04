@@ -29,8 +29,9 @@ public class CargoItem {
 		super();
 	}
 	
-	public CargoItem(String itemNumber, Integer qtyNeeds) {
+	public CargoItem(String itemNumber, Integer qtyNeeds, Integer qtyToBeDelivered) {
 		this.itemNumber = itemNumber;
+		this.qtyNeeds = qtyNeeds;
 		this.qtyNeeds = qtyNeeds;
 	}
 
@@ -57,6 +58,14 @@ public class CargoItem {
 	}
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	

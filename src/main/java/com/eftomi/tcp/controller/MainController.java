@@ -1,6 +1,5 @@
 package com.eftomi.tcp.controller;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -83,6 +82,7 @@ public class MainController {
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("stock_nav", false);
 		model.addAttribute("deliveryNoteCreateNav", false);
+		model.addAttribute("modifyQuantityNav", false);
 		
 		
 		return "index";
@@ -96,6 +96,7 @@ public class MainController {
 		model.addAttribute("packagingInstructionNav", true);
 		model.addAttribute("deliveryNoteCreateSelectNav", false);
 		model.addAttribute("deliveryNoteCreateQuantity", false);
+		model.addAttribute("modifyQuantityNav", false);
 		
 		model.addAttribute("packagingInstruction", cargoService.packagingInstruction());
 		return "index";
@@ -109,6 +110,7 @@ public class MainController {
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("deliveryNoteCreateSelectNav", true);
 		model.addAttribute("deliveryNoteCreateQuantity", false);
+		model.addAttribute("modifyQuantityNav", false);
 		
 		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
@@ -124,6 +126,7 @@ public class MainController {
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("deliveryNoteCreateSelectNav", true);
 		model.addAttribute("deliveryNoteCreateQuantity", false);
+		model.addAttribute("modifyQuantityNav", false);
 		
 		session.setAttribute("itemNumberSetDTO", itemNumberSetDTO);
 		String list = itemNumberSetDTO.getItemNumberSet().stream()
@@ -144,6 +147,7 @@ public class MainController {
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("deliveryNoteCreateSelectNav", false);
 		model.addAttribute("deliveryNoteCreateQuantityNav", true);
+		model.addAttribute("modifyQuantityNav", false);
 		
 		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
 		cargoService.createDeliveryNote(itemNumberSetDTO.getItemNumberSet());
@@ -152,5 +156,32 @@ public class MainController {
 		return "index";
 	}
 	
-
+	@PostMapping("/modifyQuantity")
+	public String modifyQuantity(Model model, int id, HttpSession session) {
+		String username = (String) session.getAttribute("username");
+		model.addAttribute("username", username);
+		model.addAttribute("menunNav", false);
+		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("deliveryNoteCreateSelectNav", false);
+		model.addAttribute("deliveryNoteCreateQuantityNav", true);
+		model.addAttribute("modifyQuantityNav", true);
+		
+		Optional<CargoItem> optCargoItem = cargoService.getCargoItem(id);
+		if (optCargoItem.isPresent()) {
+			CargoItem cargoItem = optCargoItem.get();
+				model.addAttribute("cargoItem", cargoItem);
+				return "index";
+			} else {
+		return null;
+			}
+	}
+	
+	@PostMapping("/modifyCargoItem")
+	public String modifyCargoItem(HttpSession session, CargoItem cargoItem) {
+		cargoService.update(cargoItem);
+//		recalculate(cargo);
+		return "redirect:/display";
+		
+	}
+	
 }
