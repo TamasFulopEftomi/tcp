@@ -163,7 +163,7 @@ public class MainController {
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("deliveryNoteCreateSelectNav", false);
-		model.addAttribute("deliveryNoteCreateQuantityNav", true);
+		model.addAttribute("deliveryNoteCreateQuantityNav", false);
 		model.addAttribute("modifyQuantityNav", true);
 		
 		Optional<CargoItem> optCargoItem = cargoService.getCargoItem(id);
@@ -177,10 +177,19 @@ public class MainController {
 	}
 	
 	@PostMapping("/modifyCargoItem")
-	public String modifyCargoItem(HttpSession session, CargoItem cargoItem) {
+	public String modifyCargoItem(Model model, HttpSession session, CargoItem cargoItem) {
+		String username = (String) session.getAttribute("username");
+		model.addAttribute("username", username);
+		model.addAttribute("menunNav", false);
+		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("deliveryNoteCreateSelectNav", false);
+		model.addAttribute("deliveryNoteCreateQuantityNav", true);
+		model.addAttribute("modifyQuantityNav", false);
+		
 		cargoService.update(cargoItem);
-//		recalculate(cargo);
-		return "redirect:/display";
+		Iterable<CargoItem> deliveryNote = cargoService.getAllCargoItems();
+		model.addAttribute("deliveryNote", deliveryNote);
+		return "index";
 		
 	}
 	

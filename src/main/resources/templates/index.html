@@ -153,8 +153,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 mx-auto">
-				<h2>Details of drink</h2>
-				<form th:action="@{/modityCargoItem}" th:object="${cargoItem}" method="POST">
+				<h2>Details of CargoItem</h2>
+				<form th:action="@{/modifyCargoItem}" th:object="${cargoItem}" method="POST">
 					<input type="hidden" th:field="*{id}">
 					<label for="itemNumber">Item Number:</label>
 					<input type="text" th:field="*{itemNumber}"><br>
