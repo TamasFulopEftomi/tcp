@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-E5HB6L2L9C"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-E5HB6L2L9C');
+	</script>
+	<title>Truck Cargo Planner</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="shortcut icon" type="image/x-icon" href="assets/code.ico">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Mulish&family=Raleway&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+	<link rel="stylesheet" type="text/css" href="main.css">
+</head>
+<body>
+
+	<section th:if="${menuNav}">
+		<nav class="navbar fixed-top navbar-never-expand navbar-light">
+			<div class="fluid-container">
+				<button class="navbar-toggler menu_button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+					<div class="navbar-nav nav_link_background">
+						<a class="nav-link" href="#" th:href="@{/packagingInstruction}">Packaging Instruction</a>
+						<a class="nav-link" th:href="@{/createCargoList}">Create Cargo List</a>
+						<a class="nav-link" th:href="@{/logout}">Logout</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+	</section>
+
+	<section>
+		<header>
+			<span>You are logged in as: </span><span th:text="${username}"></span>
+		</header>
+	</section>
+	
+	<section th:if="${packagingInstructionNav}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+					<table class="table table-striped">
+						<tr>
+							<th>No</th>
+							<th>Item number</th>
+							<th>Pallet type</th>
+							<th>Box type</th>
+							<th>Pcs in box</th>
+							<th>Boxes in row</th>
+							<th>Rows on pallet</th>
+							<th>Pallet stackable</th>
+						</tr>
+						<tr th:object="${pack}" th:each="pack,stat : ${packagingInstruction}">
+							<td><span th:text="${stat.count}">1</span></td>
+							<td><span th:text="*{itemNo}">Nr0001</span></td>
+							<td><span th:text="*{palletType}">Nr0001</span></td>
+							<td><span th:text="*{boxType}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{pcsInBox}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{boxesInRow}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{rowsOnPallet}">Nr0001</span></td>
+							<td><span th:text="*{stackable}">Nr0001</span></td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section th:if="${createCargoListSelectNav}" id="list_select">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+				<h3>Please select the item numbers of products to be delivered and click the Submit button below!</h3>
+					<form action="#" th:action="@{/createCargoListSelect}" th:object="${itemNumberSetDTO}" method="post">
+					<ul>
+						<li th:each="iMap : ${itemMap}">
+							<input type="checkbox" th:field="*{itemNumberSet}" th:value="${iMap.key}">
+							<label for="${#ids.next('iMap')}" th:text="${iMap.value}">NR0001</label>
+						</li>
+					</ul>
+						<input type="submit" value="Submit">
+					</form>
+					<div th:if="${list}">
+						<h3>You have selected out the following items for shipping:</h3>
+							<span th:text="${list}"></span>
+						<h3>If you want to deliver these goods please click the Next button to add quantities to the list, otherwise repeat the selection process!</h3>
+						<form th:action="@{/createCargoListQuantity}" method="post">
+							<input type="submit" value="Next"/>
+						</form>
+					</div>
+					<form th:action="@{/display}">
+						<input type="submit" value="Back to main page"/>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+	<section th:if="${createCargoListMainNav}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+
+					<table class="table">
+						<tr>
+							<th>No</th>
+							<th>Item number</th>
+							<th>Quantity required</th>
+							<th>Quantity to be delivered</th>
+						</tr>
+						<tr th:object="${item}" th:each="item,stat : ${cargoItemList}">
+							<td><span th:text="${stat.count}">1</span></td>
+							<td><span th:text="*{itemNumber}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{qtyNeeds}">0</span></td>
+							<td class="text-end"><span th:text="*{qtyToBeDelivered}">0</span></td>
+							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Modify requred Quantity"/></form></td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</table>
+					
+					<form th:action="@{/createCargoList}">
+						<input type="submit" value="Back to selection process"/>
+					</form>
+					<form th:action="@{/display}">
+						<input type="submit" value="Back to main page"/>
+					</form>
+					
+					<table class="table">
+						<tr>
+							<th>No</th>
+							<th>Item number</th>
+							<th>Quantity required</th>
+							<th>Quantity to be delivered</th>
+						</tr>
+						<tr th:object="${item}" th:each="item,stat : ${cargoItemList}">
+							<td><span th:text="${stat.count}">1</span></td>
+							<td><span th:text="*{itemNumber}">Nr0001</span></td>
+							<td class="text-end"><span th:text="*{qtyNeeds}">0</span></td>
+							<td class="text-end"><span th:text="*{qtyToBeDelivered}">0</span></td>
+							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Modify requred Quantity"/></form></td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section th:if="${modifyQuantityNav}">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-10 mx-auto">
+				<h2>Details of CargoItem</h2><br>
+				<span>Please enter the required quantity of the item. Please note the delevered quatity rounded up to the smallest packaging unit.</span><br>
+				<span>Item number: </span><span th:text="${cargoItem.itemNumber}"></span>
+				<form th:action="@{/modifyCargoItem}" th:object="${cargoItem}" method="POST">
+					<input type="hidden" th:field="*{id}">
+					<input type="hidden" th:field="*{itemNumber}">
+					<input type="hidden" th:field="*{qtyToBeDelivered}">
+					<label for="quantity">Quantity:</label>
+					<input type="text" th:field="*{qtyNeeds}"><br>
+					<input type="submit" value="Send">
+				</form>
+				</div>
+			</div>
+		</div>
+	</section>
+	
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

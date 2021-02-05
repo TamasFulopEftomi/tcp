@@ -29,14 +29,14 @@ public class MainController {
 	private UserService userService;
 	
 	@GetMapping("/")
-	public String login(Model model) {
+	public String indx(Model model) {
 		model.addAttribute("loginDTO", new LoginDTO());
 		model.addAttribute("registrationDTO", new RegistrationDTO());
-		return "login";
+		return "index";
 	}
 	
-	@PostMapping("/login")
-	public String login(LoginDTO loginDTO, HttpSession session, Model model) {
+	@PostMapping("/index")
+	public String index(LoginDTO loginDTO, HttpSession session, Model model) {
 		boolean loggedIn = userService.login(loginDTO.getEmail(), loginDTO.getPassword());
 		if (loggedIn) {
 			Optional<User> optUser = userService.getUser(loginDTO.getEmail());
@@ -45,12 +45,12 @@ public class MainController {
 			} else {
 				// exception handling
 			}
-			return "redirect:/index";
+			return "redirect:/display";
 		} else {
 			model.addAttribute("loginError", String.format("Email address %s or it's password is not valid!", loginDTO.getEmail()));
 			model.addAttribute("loginDTO", new LoginDTO());
 			model.addAttribute("registrationDTO", new RegistrationDTO());
-			return "login";
+			return "index";
 		}
 	}
 	
@@ -65,27 +65,26 @@ public class MainController {
 		boolean registeredIn = userService.registration(registrationDTO.getName(), registrationDTO.getEmail(), registrationDTO.getPassword());
 		if (registeredIn) {
 			session.setAttribute("username", registrationDTO.getName());
-			return "redirect:/index";
+			return "redirect:/display";
 		} else {
 			model.addAttribute("registrationError", String.format("(s)", "Az email létezik vagy nem felel meg az előírásoknak."));
 			model.addAttribute("loginDTO", new LoginDTO());
 			model.addAttribute("registrationDTO", new RegistrationDTO());
-			return "login";
+			return "index";
 		}
 	}
 	
-	@GetMapping("/index")
-	public String index(Model model, HttpSession session) {
+	@GetMapping("/display")
+	public String display(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
 		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("stock_nav", false);
-		model.addAttribute("deliveryNoteCreateNav", false);
+		model.addAttribute("createCargoListSelectNav", false);
+		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
 		
-		
-		return "index";
+		return "display";
 	}
 	
 	@GetMapping("/packagingInstruction")
@@ -94,38 +93,38 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
 		model.addAttribute("packagingInstructionNav", true);
-		model.addAttribute("deliveryNoteCreateSelectNav", false);
-		model.addAttribute("deliveryNoteCreateQuantity", false);
+		model.addAttribute("createCargoListSelectNav", false);
+		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
 		
 		model.addAttribute("packagingInstruction", cargoService.packagingInstruction());
-		return "index";
+		return "display";
 	}
 	
-	@GetMapping("/deliveryNoteCreate")
-	public String deliveryNoteCreate(Model model, HttpSession session) {
+	@GetMapping("/createCargoList")
+	public String createCargoList(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("deliveryNoteCreateSelectNav", true);
-		model.addAttribute("deliveryNoteCreateQuantity", false);
+		model.addAttribute("createCargoListSelectNav", true);
+		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
 		
 		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
 		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
-		return "index";
+		return "display";
 	}
 	
-	@PostMapping("/deliveryNoteCreateSelect")
-	public String deliveryNoteCreateSelect(Model model, ItemNumberSetDTO itemNumberSetDTO, HttpSession session) {
+	@PostMapping("/createCargoListSelect")
+	public String createCargoListSelect(Model model, ItemNumberSetDTO itemNumberSetDTO, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("deliveryNoteCreateSelectNav", true);
-		model.addAttribute("deliveryNoteCreateQuantity", false);
+		model.addAttribute("createCargoListSelectNav", true);
+		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
 		
 		session.setAttribute("itemNumberSetDTO", itemNumberSetDTO);
@@ -136,24 +135,24 @@ public class MainController {
 		model.addAttribute("list", list);
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
 		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
-		return "index";
+		return "display";
 	}
 	
-	@PostMapping("/deliveryNoteCreateQuantity")
-	public String deliveryNoteCreateQuantity(Model model, HttpSession session ) {
+	@PostMapping("/createCargoListQuantity")
+	public String createCargoListQuantity(Model model, HttpSession session ) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("deliveryNoteCreateSelectNav", false);
-		model.addAttribute("deliveryNoteCreateQuantityNav", true);
+		model.addAttribute("createCargoListSelectNav", false);
+		model.addAttribute("createCargoListMainNav", true);
 		model.addAttribute("modifyQuantityNav", false);
 		
 		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
-		cargoService.createDeliveryNote(itemNumberSetDTO.getItemNumberSet());
-		Iterable<CargoItem> deliveryNote = cargoService.getAllCargoItems();
-		model.addAttribute("deliveryNote", deliveryNote);
-		return "index";
+		cargoService.cargoListCreate(itemNumberSetDTO.getItemNumberSet());
+		Iterable<CargoItem> cargoItemList = cargoService.getAllCargoItems();
+		model.addAttribute("cargoItemList", cargoItemList);
+		return "display";
 	}
 	
 	@PostMapping("/modifyQuantity")
@@ -162,15 +161,15 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("deliveryNoteCreateSelectNav", false);
-		model.addAttribute("deliveryNoteCreateQuantityNav", false);
+		model.addAttribute("createCargoListSelectNav", false);
+		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", true);
 		
 		Optional<CargoItem> optCargoItem = cargoService.getCargoItem(id);
 		if (optCargoItem.isPresent()) {
 			CargoItem cargoItem = optCargoItem.get();
 				model.addAttribute("cargoItem", cargoItem);
-				return "index";
+				return "display";
 			} else {
 		return null;
 			}
@@ -182,14 +181,15 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("deliveryNoteCreateSelectNav", false);
-		model.addAttribute("deliveryNoteCreateQuantityNav", true);
+		model.addAttribute("createCargoListSelectNav", false);
+		model.addAttribute("createCargoListMainNav", true);
 		model.addAttribute("modifyQuantityNav", false);
 		
 		cargoService.calculateCargoItemQuantities(cargoItem);
-		Iterable<CargoItem> deliveryNote = cargoService.getAllCargoItems();
-		model.addAttribute("deliveryNote", deliveryNote);
-		return "index";
+		Iterable<CargoItem> cargoItemList = cargoService.getAllCargoItems();
+//		cargoService.calculateCargo(cargoItemList);
+		model.addAttribute("cargoItemList", cargoItemList);
+		return "display";
 		
 	}
 	

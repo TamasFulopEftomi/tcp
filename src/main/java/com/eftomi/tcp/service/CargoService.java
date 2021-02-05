@@ -58,7 +58,7 @@ public class CargoService {
 		return itemNumberMap;
 	}
 
-	public void createDeliveryNote(Set<String> itemNumberSet) {
+	public void cargoListCreate(Set<String> itemNumberSet) {
 		for (String itemNumber : itemNumberSet) {
 			cargoItemDAO.save(new CargoItem(itemNumber, 0, 0));
 		}

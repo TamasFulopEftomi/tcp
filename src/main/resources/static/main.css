@@ -67,11 +67,11 @@ button {
 }
 
 
-#delivery_note_create li {
+#list_select li {
 	display: inline-block;
 	margin: .5rem 1rem;
 }
 
-#delivery_note_create ul {
+#list_select ul {
 	margin: 2rem;
 }
