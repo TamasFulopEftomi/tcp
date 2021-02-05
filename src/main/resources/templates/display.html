@@ -62,14 +62,14 @@
 							<th>Pallet stackable</th>
 						</tr>
 						<tr th:object="${pack}" th:each="pack,stat : ${packagingInstruction}">
-							<td><span th:text="${stat.count}">1</span></td>
-							<td><span th:text="*{itemNo}">Nr0001</span></td>
-							<td><span th:text="*{palletType}">Nr0001</span></td>
-							<td><span th:text="*{boxType}">Nr0001</span></td>
-							<td class="text-end"><span th:text="*{pcsInBox}">Nr0001</span></td>
-							<td class="text-end"><span th:text="*{boxesInRow}">Nr0001</span></td>
-							<td class="text-end"><span th:text="*{rowsOnPallet}">Nr0001</span></td>
-							<td><span th:text="*{stackable}">Nr0001</span></td>
+							<td th:text="${stat.count}">1</td>
+							<td th:text="*{itemNo}">Nr0001</td>
+							<td th:text="*{palletType}">Nr0001</td>
+							<td th:text="*{boxType}">Nr0001</td>
+							<td class="text-end" th:text="*{pcsInBox}">Nr0001</td>
+							<td class="text-end" th:text="*{boxesInRow}">Nr0001</td>
+							<td class="text-end" th:text="*{rowsOnPallet}">Nr0001</td>
+							<td th:text="*{stackable}">Nr0001</td>
 						</tr>
 						<tr th:remove="all">
 							<td>2</td>
@@ -103,7 +103,7 @@
 						<form th:action="@{/createCargoListQuantity}" method="post">
 							<input type="submit" value="Next"/>
 						</form>
-					</div>
+					</div><br>
 					<form th:action="@{/display}">
 						<input type="submit" value="Back to main page"/>
 					</form>
@@ -115,8 +115,9 @@
 	<section th:if="${createCargoListMainNav}">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-10 mx-auto">
-
+				<span class="text-center">Please note if delivered quatity rounded up to the smallest packaging unit.</span>
+			
+				<div class="col-lg-5 mx-auto">
 					<table class="table">
 						<tr>
 							<th>No</th>
@@ -125,39 +126,11 @@
 							<th>Quantity to be delivered</th>
 						</tr>
 						<tr th:object="${item}" th:each="item,stat : ${cargoItemList}">
-							<td><span th:text="${stat.count}">1</span></td>
-							<td><span th:text="*{itemNumber}">Nr0001</span></td>
-							<td class="text-end"><span th:text="*{qtyNeeds}">0</span></td>
-							<td class="text-end"><span th:text="*{qtyToBeDelivered}">0</span></td>
-							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Modify requred Quantity"/></form></td>
-						</tr>
-						<tr th:remove="all">
-							<td>2</td>
-							<td>Nr0002</td>
-							<td>108</td>
-						</tr>
-					</table>
-					
-					<form th:action="@{/createCargoList}">
-						<input type="submit" value="Back to selection process"/>
-					</form>
-					<form th:action="@{/display}">
-						<input type="submit" value="Back to main page"/>
-					</form>
-					
-					<table class="table">
-						<tr>
-							<th>No</th>
-							<th>Item number</th>
-							<th>Quantity required</th>
-							<th>Quantity to be delivered</th>
-						</tr>
-						<tr th:object="${item}" th:each="item,stat : ${cargoItemList}">
-							<td><span th:text="${stat.count}">1</span></td>
-							<td><span th:text="*{itemNumber}">Nr0001</span></td>
-							<td class="text-end"><span th:text="*{qtyNeeds}">0</span></td>
-							<td class="text-end"><span th:text="*{qtyToBeDelivered}">0</span></td>
-							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Modify requred Quantity"/></form></td>
+							<td th:text="${stat.count}">1</td>
+							<td th:text="*{itemNumber}">Nr0001</td>
+							<td class="text-end" th:text="*{qtyNeeds}">0</td>
+							<td class="text-end" th:text="*{qtyToBeDelivered}">0</td>
+							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Qty mod"/></form></td>
 						</tr>
 						<tr th:remove="all">
 							<td>2</td>
@@ -166,6 +139,60 @@
 						</tr>
 					</table>
 				</div>
+
+				<div class="col-lg-5 mx-auto">
+					<table class="table" th:object="${cargoListDTO}">
+						<tr>
+							<th></th>
+							<th>Quantity</th>
+							<th>Quantity units</th>
+						</tr>
+						<tr>
+							<td>Netto weight:</td>
+							<td class="text-end" th:text="*{nettoWeight}"></td>
+							<td>kg</td>
+						</tr>
+						<tr>
+							<td>Empties weight:</td>
+							<td class="text-end" th:text="*{emptiesWeight}"></td>
+							<td>kg</td>
+						</tr>
+						<tr>
+							<td>Gross weight:</td>
+							<td class="text-end" th:text="*{bruttoWeight}"></td>
+							<td>kg</td>
+						</tr>
+						<tr>
+							<td>Number of pallet(s):</td>
+							<td class="text-end" th:text="*{numberOfPallets}"></td>
+							<td>pc(s)</td>
+						</tr>
+						<tr>
+							<td>Number of whole pallet(s):</td>
+							<td class="text-end" th:text="*{numberOfWholePallets}"></td>
+							<td>pc(s)</td>
+						</tr>
+						<tr>
+							<td>Number of not whole pallet(s):</td>
+							<td class="text-end" th:text="*{numberOfNotWholePallets}"></td>
+							<td>pc(s)</td>
+						</tr>
+						<tr>
+							<td>Required loading space in pallet(s):</td>
+							<td class="text-end" th:text="*{loadingSpace}"></td>
+							<td>pc(s)</td>
+						</tr>
+					</table>
+					
+					<form th:action="@{/createCargoList}">
+						<input type="submit" value="Back to selection process"/>
+					</form><br>
+					<form th:action="@{/display}">
+						<input type="submit" value="Back to main page"/>
+					</form>
+					
+				</div>
+				
 			</div>
 		</div>
 	</section>
@@ -173,9 +200,9 @@
 	<section th:if="${modifyQuantityNav}">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-10 mx-auto">
+				<div class="col-lg-4 mx-auto">
 				<h2>Details of CargoItem</h2><br>
-				<span>Please enter the required quantity of the item. Please note the delevered quatity rounded up to the smallest packaging unit.</span><br>
+				<span>Please enter the required quantity of the item. Please note if delevered quatity rounded up to the smallest packaging unit.</span><br>
 				<span>Item number: </span><span th:text="${cargoItem.itemNumber}"></span>
 				<form th:action="@{/modifyCargoItem}" th:object="${cargoItem}" method="POST">
 					<input type="hidden" th:field="*{id}">
@@ -183,7 +210,7 @@
 					<input type="hidden" th:field="*{qtyToBeDelivered}">
 					<label for="quantity">Quantity:</label>
 					<input type="text" th:field="*{qtyNeeds}"><br>
-					<input type="submit" value="Send">
+					<input type="submit" value="Ok">
 				</form>
 				</div>
 			</div>

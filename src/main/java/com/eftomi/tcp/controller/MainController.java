@@ -1,5 +1,6 @@
 package com.eftomi.tcp.controller;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.eftomi.tcp.dto.CargoListDTO;
 import com.eftomi.tcp.dto.ItemNumberSetDTO;
 import com.eftomi.tcp.dto.LoginDTO;
 import com.eftomi.tcp.dto.RegistrationDTO;
@@ -150,8 +152,10 @@ public class MainController {
 		
 		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
 		cargoService.cargoListCreate(itemNumberSetDTO.getItemNumberSet());
-		Iterable<CargoItem> cargoItemList = cargoService.getAllCargoItems();
+		List<CargoItem> cargoItemList = cargoService.getAllCargoItems();
+		CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 		model.addAttribute("cargoItemList", cargoItemList);
+		model.addAttribute("cargoListDTO", cargoListDTO);
 		return "display";
 	}
 	
@@ -186,9 +190,10 @@ public class MainController {
 		model.addAttribute("modifyQuantityNav", false);
 		
 		cargoService.calculateCargoItemQuantities(cargoItem);
-		Iterable<CargoItem> cargoItemList = cargoService.getAllCargoItems();
-//		cargoService.calculateCargo(cargoItemList);
+		List<CargoItem> cargoItemList = cargoService.getAllCargoItems();
+		CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 		model.addAttribute("cargoItemList", cargoItemList);
+		model.addAttribute("cargoListDTO", cargoListDTO);
 		return "display";
 		
 	}

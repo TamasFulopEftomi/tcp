@@ -10,8 +10,8 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.eftomi.tcp.dto.CargoListDTO;
 import com.eftomi.tcp.dto.PackagingInstructionDTO;
-import com.eftomi.tcp.entity.Cargo;
 import com.eftomi.tcp.entity.CargoItem;
 import com.eftomi.tcp.entity.Item;
 import com.eftomi.tcp.repository.CargoItemRepository;
@@ -64,7 +64,7 @@ public class CargoService {
 		}
 	}
 	
-	public Iterable<CargoItem> getAllCargoItems() {
+	public List<CargoItem> getAllCargoItems() {
 		return cargoItemDAO.findAll();
 	}
 
@@ -112,10 +112,32 @@ public class CargoService {
 
 	}
 	
-	public Cargo calculateCargo(List<CargoItem> cargoItems) {
+	public CargoListDTO calculateCargo(List<CargoItem> cargoItems) {
+		CargoListDTO cargoListDTO = new CargoListDTO();
+		cargoListDTO.setNettoWeight(1);
+		cargoListDTO.setEmptiesWeight(2);
+		cargoListDTO.setBruttoWeight(3);
+		cargoListDTO.setNumberOfNotWholePallets(4);
+		cargoListDTO.setNumberOfWholePallets(5);
+		cargoListDTO.setNumberOfPallets(6);
+		cargoListDTO.setLoadingSpace(7);
 		for (CargoItem cargoItem : cargoItems) {
-			
+
 		}
-		return null;
+		return cargoListDTO;
 	}
 }
+/*	
+	private  void calculateLoadingSpace() {
+        for (Pick pick : pickList) {
+            if (pick.isStackable()) {
+                numberOfStackablePallets += pick.getNumberOfWholePallets();
+            }
+        }
+        int half;
+        int subtraction;
+        half = sumPallets / 2;
+        subtraction = half < numberOfStackablePallets ? half : numberOfStackablePallets;
+        loadingSpace = sumPallets - subtraction;
+    }
+}*/
