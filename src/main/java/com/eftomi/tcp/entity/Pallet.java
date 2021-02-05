@@ -14,21 +14,31 @@ public class Pallet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String palletType;
+	private String palletName;
 	private double palletWeight;
 	private double roofWeight;
 	private boolean stackable;
 	@OneToMany(mappedBy = "pallet")
 	private List<Item> items;
-	
-	public Pallet(String palletType, double palletWeight, double roofWeight, boolean stackable) {
+
+	public Pallet(String palletName, String palletType, double palletWeight, double roofWeight, boolean stackable) {
 		super();
+		this.palletName = palletName;
 		this.palletType = palletType;
 		this.palletWeight = palletWeight;
 		this.roofWeight = roofWeight;
 		this.stackable = stackable;
 	}
-	
+
 	public Pallet() {}
+
+	public String getPalletName() {
+		return palletName;
+	}
+
+	public void setPalletName(String palletName) {
+		this.palletName = palletName;
+	}
 
 	public String getPalletType() {
 		return palletType;

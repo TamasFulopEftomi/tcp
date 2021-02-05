@@ -13,22 +13,32 @@ public class Box {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private String boxName;
 	private String boxType;
 	private int boxesInRow;
 	private int rowsOnPallet;
 	private double boxWeight;
 	@OneToMany(mappedBy = "box")
 	private List<Item> items;
-	
-	public Box(String boxType, int boxesInRow, int rowsOnPallet, double boxWeight) {
+
+	public Box(String boxName, String boxType, int boxesInRow, int rowsOnPallet, double boxWeight) {
 		super();
+		this.boxName = boxName;
 		this.boxType = boxType;
 		this.boxesInRow = boxesInRow;
 		this.rowsOnPallet = rowsOnPallet;
 		this.boxWeight = boxWeight;
 	}
-	
+
 	public Box() {}
+
+	public String getBoxName() {
+		return boxName;
+	}
+
+	public void setBoxName(String boxName) {
+		this.boxName = boxName;
+	}
 
 	public String getBoxType() {
 		return boxType;
@@ -69,6 +79,6 @@ public class Box {
 	public void setItems(List<Item> items) {
 		this.items = items;
 	}
-
+	
 	
 }
