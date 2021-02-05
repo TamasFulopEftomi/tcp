@@ -17,6 +17,7 @@ import com.eftomi.tcp.entity.Item;
 import com.eftomi.tcp.repository.CargoItemRepository;
 import com.eftomi.tcp.repository.ItemRepository;
 import com.eftomi.tcp.service.exception.CargoItemNotFoundException;
+import com.eftomi.tcp.service.exception.ItemNotFoundException;
 
 @Service
 public class CargoService {
@@ -69,31 +70,46 @@ public class CargoService {
 
 	public void clearCargoItem() {
 		cargoItemDAO.deleteAll();
-		
 	}
 	
 	public Optional<CargoItem> getCargoItem(int id) {
 		return cargoItemDAO.findById(id);
 	}
 	
-	public CargoItem update(CargoItem cargoItem) {
+	public void calculateCargoItemQuantities(CargoItem cargoItem) {
+		String itemNumber = cargoItem.getItemNumber();
+		int pcsInBox;
+		int qtyNeeds = cargoItem.getQtyNeeds();
+		Optional<Item> optItem = itemDAO.findByItemNo(itemNumber);
+		if (optItem.isPresent()) {
+			Item item = optItem.get();
+			pcsInBox = item.getPcsInBox();
+		} else {
+			throw new ItemNotFoundException(cargoItem.getId());
+		}
+		int qtyToBeDelivered;
+		int wholeBoxesNumber = qtyNeeds / pcsInBox;
+		if (qtyNeeds % pcsInBox == 0) {
+			qtyToBeDelivered = wholeBoxesNumber * pcsInBox;
+		} else {
+			qtyToBeDelivered = (wholeBoxesNumber + 1) * pcsInBox;
+		}
+		cargoItem.setQtyToBeDelivered(qtyToBeDelivered);
+		update(cargoItem);
+	}
+	
+	private void update(CargoItem cargoItem) {
 		Optional<CargoItem> optDbCargoItem = cargoItemDAO.findById(cargoItem.getId());
 		if (optDbCargoItem.isPresent()) {
 			CargoItem dbCargoItem = optDbCargoItem.get();
 			dbCargoItem.setItemNumber(cargoItem.getItemNumber());
 			dbCargoItem.setQtyNeeds(cargoItem.getQtyNeeds());
-			return cargoItemDAO.save(dbCargoItem);
+			dbCargoItem.setQtyToBeDelivered(cargoItem.getQtyToBeDelivered());
+			cargoItemDAO.save(dbCargoItem);
 		} else {
 			throw new CargoItemNotFoundException(cargoItem.getId());
 		}
 
-	}
-	
-	
-	public void calculateQtyToBeDelivered(List<CargoItem> cargoItems) {
-		for (CargoItem cargoItem : cargoItems) {
-			
-		}
 	}
 	
 	public Cargo calculateCargo(List<CargoItem> cargoItems) {

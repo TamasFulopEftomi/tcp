@@ -32,7 +32,7 @@ public class CargoItem {
 	public CargoItem(String itemNumber, Integer qtyNeeds, Integer qtyToBeDelivered) {
 		this.itemNumber = itemNumber;
 		this.qtyNeeds = qtyNeeds;
-		this.qtyNeeds = qtyNeeds;
+		this.qtyToBeDelivered = qtyToBeDelivered;
 	}
 
 	public String getItemNumber() {

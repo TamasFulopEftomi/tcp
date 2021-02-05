@@ -186,7 +186,7 @@ public class MainController {
 		model.addAttribute("deliveryNoteCreateQuantityNav", true);
 		model.addAttribute("modifyQuantityNav", false);
 		
-		cargoService.update(cargoItem);
+		cargoService.calculateCargoItemQuantities(cargoItem);
 		Iterable<CargoItem> deliveryNote = cargoService.getAllCargoItems();
 		model.addAttribute("deliveryNote", deliveryNote);
 		return "index";
