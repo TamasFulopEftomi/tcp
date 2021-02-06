@@ -75,3 +75,13 @@ button {
 #list_select ul {
 	margin: 2rem;
 }
+
+.inline_block {
+	display: inline-block;
+}
+
+.top_right {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
