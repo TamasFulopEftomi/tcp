@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.eftomi.tcp.dto.CargoListDTO;
 import com.eftomi.tcp.dto.PackagingInstructionDTO;
+import com.eftomi.tcp.entity.Box;
 import com.eftomi.tcp.entity.CargoItem;
 import com.eftomi.tcp.entity.Item;
+import com.eftomi.tcp.repository.BoxRepository;
 import com.eftomi.tcp.repository.CargoItemRepository;
 import com.eftomi.tcp.repository.ItemRepository;
 import com.eftomi.tcp.service.exception.CargoItemNotFoundException;
@@ -24,6 +26,9 @@ public class CargoService {
 	
 	@Autowired
 	private ItemRepository itemDAO;
+	
+	@Autowired
+	private BoxRepository boxDAO;
 	
 	@Autowired
 	private CargoItemRepository cargoItemDAO;
@@ -38,6 +43,7 @@ public class CargoService {
 		for (Item item : itemList) {
 			PackagingInstructionDTO pIDTO = new PackagingInstructionDTO();
 			pIDTO.setItemNo(item.getItemNo());
+			pIDTO.setWeight(item.getItemWeight());
 			pIDTO.setPalletType(item.getPallet().getPalletType());
 			pIDTO.setBoxType(item.getBox().getBoxType());
 			pIDTO.setPcsInBox(item.getPcsInBox());
@@ -49,6 +55,9 @@ public class CargoService {
 		return pIDTOList;
 	}
 	
+	public List<Box> emptiesList() {
+		return boxDAO.findAll();
+	}
 	public Map<String, String> getItemNumberMap() {
 		List<Item> itemList = getAllItems();
 		Map<String, String> itemNumberMap = new TreeMap<>();

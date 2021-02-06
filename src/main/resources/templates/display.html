@@ -31,6 +31,11 @@
 					</form>
 				</div>
 				<div th:if="${menuNav}" class="float-start">
+					<form th:action="@{/emptiesList}" class="float-start">
+						<input type="submit" value="Empties list"/>
+					</form>
+				</div>
+				<div th:if="${menuNav}" class="float-start">
 					<form th:action="@{/createCargoList}" class="float-start">
 						<input type="submit" value="Create Cargo List"/>
 					</form>
@@ -47,34 +52,77 @@
 	
 	<section th:if="${packagingInstructionNav}" class="container">
 		<div class="row">
-			<div class="col-lg-6 mx-auto">
-				<table class="table table-striped">
-					<tr>
-						<th>No</th>
-						<th>Item number</th>
-						<th>Pallet type</th>
-						<th>Box type</th>
-						<th>Pcs in box</th>
-						<th>Boxes in row</th>
-						<th>Rows on pallet</th>
-						<th>Pallet stackable</th>
-					</tr>
-					<tr th:object="${pack}" th:each="pack,stat : ${packagingInstruction}">
-						<td th:text="${stat.count}">1</td>
-						<td th:text="*{itemNo}">Nr0001</td>
-						<td th:text="*{palletType}">Nr0001</td>
-						<td th:text="*{boxType}">Nr0001</td>
-						<td class="text-end" th:text="*{pcsInBox}">Nr0001</td>
-						<td class="text-end" th:text="*{boxesInRow}">Nr0001</td>
-						<td class="text-end" th:text="*{rowsOnPallet}">Nr0001</td>
-						<td th:text="*{stackable}">Nr0001</td>
-					</tr>
-					<tr th:remove="all">
-						<td>2</td>
-						<td>Nr0002</td>
-						<td>108</td>
-					</tr>
+			<div class="col-lg-7 mx-auto">
+				<table class="table caption-top">
+				<caption>Packaging instruction</caption>
+					<thead>
+						<tr class="border-bottom">
+							<th>#</th>
+							<th>Item number</th>
+							<th>Weight (kg/pc)</th>
+							<th>Pallet type</th>
+							<th>Box type</th>
+							<th>Pcs in box</th>
+							<th>Boxes in row</th>
+							<th>Rows on pallet</th>
+							<th>Pallet stackable</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-bottom" th:object="${pack}" th:each="pack,stat : ${packagingInstruction}">
+							<td th:text="${stat.count}">1</td>
+							<td th:text="*{itemNo}">Nr0001</td>
+							<td class="text-end" th:text="*{weight}">10.4</td>
+							<td th:text="*{palletType}">pal002</td>
+							<td th:text="*{boxType}">box005</td>
+							<td class="text-end" th:text="*{pcsInBox}">40</td>
+							<td class="text-end" th:text="*{boxesInRow}">8</td>
+							<td class="text-end" th:text="*{rowsOnPallet}">3</td>
+							<td th:text="*{stackable}">true</td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</tbody>
 				</table>
+			</div>
+		</div>
+	</section>
+	
+		<section th:if="${emptiesListNav}" class="container">
+		<div class="row">
+			<div class="col-lg-5 mx-auto">
+				<table class="table caption-top border-bottom">
+				<caption>Empties list</caption>
+					<thead>
+						<tr class="border-bottom">
+							<th>#</th>
+							<th>Type</th>
+							<th>Name</th>
+							<th class="text-end">Weight (kg/pc)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-bottom" th:each="box,stat : ${emptiesList}" th:class="${#strings.equals(box.boxName, 'Silver Box') ? 'silver' 
+						: #strings.equals(box.boxName, 'Orange Box') ? 'orange' : #strings.equals(box.boxName, 'Light Blue Box') ? 'light_blue' : #strings.equals(box.boxName, 'Red Box') ? 'red' 
+						: #strings.equals(box.boxName, 'Grey Box') ? 'grey' : #strings.equals(box.boxName, 'Green Box') ? 'green' : #strings.equals(box.boxName, 'Brown Box') ? 'brown' 
+						: #strings.equals(box.boxName, 'Blue Box') ? 'blue' : #strings.equals(box.boxName, 'Purple Box') ? 'purple' : #strings.equals(box.boxName, 'Black Box') ? 'black' 
+						: #strings.equals(box.boxName, 'Light Green Box') ? 'light_green' : ''}">
+							<td class="border-bottom" th:text="${stat.count}">1</td>
+							<td class="border-bottom" th:text="${box.boxType}">box001</td>
+							<td class="border-bottom" th:text="${box.boxName}">Cardboard Box</td>
+							<td class="border-bottom text-end" th:text="${box.boxWeight}">1.0</td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</tbody>
+				</table>
+				<span>Color usage for transparency.</span>
 			</div>
 		</div>
 	</section>
@@ -113,69 +161,78 @@
 		
 			<div class="col-lg-5 mx-auto">
 				<table class="table">
-					<tr>
-						<th>No</th>
-						<th>Item number</th>
-						<th>Quantity required</th>
-						<th>Quantity to be delivered</th>
-					</tr>
-					<tr th:object="${item}" th:each="item,stat : ${cargoItemList}">
-						<td th:text="${stat.count}">1</td>
-						<td th:text="*{itemNumber}">Nr0001</td>
-						<td class="text-end" th:text="*{qtyNeeds}">0</td>
-						<td class="text-end" th:text="*{qtyToBeDelivered}">0</td>
-						<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Qty mod"/></form></td>
-					</tr>
-					<tr th:remove="all">
-						<td>2</td>
-						<td>Nr0002</td>
-						<td>108</td>
-					</tr>
+					<thead>
+						<tr class="border-bottom">
+							<th>#</th>
+							<th>Item number</th>
+							<th>Quantity required</th>
+							<th>Quantity to be delivered</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-bottom" th:object="${item}" th:each="item,stat : ${cargoItemList}">
+							<td th:text="${stat.count}">1</td>
+							<td th:text="*{itemNumber}">Nr0001</td>
+							<td class="text-end" th:text="*{qtyNeeds}">0</td>
+							<td class="text-end" th:text="*{qtyToBeDelivered}">0</td>
+							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Qty mod"/></form></td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
 
 			<div class="col-lg-5 mx-auto">
 				<table class="table" th:object="${cargoListDTO}">
-					<tr>
-						<th></th>
-						<th>Quantity</th>
-						<th>Quantity units</th>
-					</tr>
-					<tr>
-						<td>Netto weight:</td>
-						<td class="text-end" th:text="*{nettoWeight}"></td>
-						<td>kg</td>
-					</tr>
-					<tr>
-						<td>Empties weight:</td>
-						<td class="text-end" th:text="*{emptiesWeight}"></td>
-						<td>kg</td>
-					</tr>
-					<tr>
-						<td>Gross weight:</td>
-						<td class="text-end" th:text="*{bruttoWeight}"></td>
-						<td>kg</td>
-					</tr>
-					<tr>
-						<td>Number of pallet(s):</td>
-						<td class="text-end" th:text="*{numberOfPallets}"></td>
-						<td>pc(s)</td>
-					</tr>
-					<tr>
-						<td>Number of whole pallet(s):</td>
-						<td class="text-end" th:text="*{numberOfWholePallets}"></td>
-						<td>pc(s)</td>
-					</tr>
-					<tr>
-						<td>Number of not whole pallet(s):</td>
-						<td class="text-end" th:text="*{numberOfNotWholePallets}"></td>
-						<td>pc(s)</td>
-					</tr>
-					<tr>
-						<td>Required loading space in pallet(s):</td>
-						<td class="text-end" th:text="*{loadingSpace}"></td>
-						<td>pc(s)</td>
-					</tr>
+					<thead>
+						<tr class="border-bottom">
+							<th></th>
+							<th>Quantity</th>
+							<th>Qty units</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-bottom">
+							<td>Netto weight:</td>
+							<td class="text-end" th:text="*{nettoWeight}"></td>
+							<td>kg</td>
+						</tr>
+						<tr class="border-bottom">
+							<td>Empties weight:</td>
+							<td class="text-end" th:text="*{emptiesWeight}"></td>
+							<td>kg</td>
+						</tr>
+						<tr class="border-bottom">
+							<td>Gross weight:</td>
+							<td class="text-end" th:text="*{bruttoWeight}"></td>
+							<td>kg</td>
+						</tr>
+						<tr class="border-bottom">
+							<td>Number of pallet(s):</td>
+							<td class="text-end" th:text="*{numberOfPallets}"></td>
+							<td>pc(s)</td>
+						</tr>
+						<tr class="border-bottom">
+							<td>Number of whole pallet(s):</td>
+							<td class="text-end" th:text="*{numberOfWholePallets}"></td>
+							<td>pc(s)</td>
+						</tr>
+						<tr class="border-bottom">
+							<td>Number of not whole pallet(s):</td>
+							<td class="text-end" th:text="*{numberOfNotWholePallets}"></td>
+							<td>pc(s)</td>
+						</tr>
+						<tr class="border-bottom">
+							<td>Required loading space in pallet(s):</td>
+							<td class="text-end" th:text="*{loadingSpace}"></td>
+							<td>pc(s)</td>
+						</tr>
+					</tbody>
 				</table>
 				
 				<form th:action="@{/createCargoList}">

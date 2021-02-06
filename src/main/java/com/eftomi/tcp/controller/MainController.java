@@ -82,6 +82,7 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
 		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
 		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
@@ -95,11 +96,27 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
 		model.addAttribute("packagingInstructionNav", true);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
 		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
 		
 		model.addAttribute("packagingInstruction", cargoService.packagingInstruction());
+		return "display";
+	}
+	
+	@GetMapping("/emptiesList")
+	public String emptiesList(Model model, HttpSession session) {
+		String username = (String) session.getAttribute("username");
+		model.addAttribute("username", username);
+		model.addAttribute("menuNav", true);
+		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", true);
+		model.addAttribute("createCargoListSelectNav", false);
+		model.addAttribute("createCargoListMainNav", false);
+		model.addAttribute("modifyQuantityNav", false);
+		
+		model.addAttribute("emptiesList", cargoService.emptiesList());
 		return "display";
 	}
 	
@@ -109,6 +126,7 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", true);
 		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
@@ -125,6 +143,7 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", true);
 		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
@@ -146,6 +165,7 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
 		model.addAttribute("createCargoListMainNav", true);
 		model.addAttribute("modifyQuantityNav", false);
@@ -165,6 +185,7 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
 		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", true);
@@ -185,6 +206,7 @@ public class MainController {
 		model.addAttribute("username", username);
 		model.addAttribute("menunNav", false);
 		model.addAttribute("packagingInstructionNav", false);
+		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
 		model.addAttribute("createCargoListMainNav", true);
 		model.addAttribute("modifyQuantityNav", false);

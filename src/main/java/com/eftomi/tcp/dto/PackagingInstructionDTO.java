@@ -2,6 +2,7 @@ package com.eftomi.tcp.dto;
 
 public class PackagingInstructionDTO {
 	private String itemNo;
+	private double weight;
 	private String palletType;
 	private String boxType;
 	private int pcsInBox;
@@ -14,6 +15,12 @@ public class PackagingInstructionDTO {
 	}
 	public void setItemNo(String itemNo) {
 		this.itemNo = itemNo;
+	}
+	public double getWeight() {
+		return weight;
+	}
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 	public String getPalletType() {
 		return palletType;

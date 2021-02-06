@@ -76,12 +76,10 @@ button {
 	margin: 2rem;
 }
 
-.inline_block {
-	display: inline-block;
+.red {
+	background-color: red;
 }
 
-.top_right {
-	position: absolute;
-	top: 0;
-	right: 0;
+.green {
+	color: green;
 }
