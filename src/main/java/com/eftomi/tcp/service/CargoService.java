@@ -58,6 +58,7 @@ public class CargoService {
 	public List<Box> emptiesList() {
 		return boxDAO.findAll();
 	}
+	
 	public Map<String, String> getItemNumberMap() {
 		List<Item> itemList = getAllItems();
 		Map<String, String> itemNumberMap = new TreeMap<>();
@@ -122,18 +123,45 @@ public class CargoService {
 	}
 	
 	public CargoListDTO calculateCargo(List<CargoItem> cargoItems) {
+		Map<String, Integer> empties = new TreeMap<>();
+		int nettoWeight = 0;
+		int boxesNumber = 0;
+		int emptiesWeight = 0;
+		for (CargoItem cargoItem : cargoItems) {
+			String itemNo = cargoItem.getItemNumber();
+			int qtyTBD = cargoItem.getQtyToBeDelivered();
+			Optional<Item> optItem = itemDAO.findByItemNo(itemNo);
+			Item item = optItem.get();
+			nettoWeight += qtyTBD * item.getItemWeight();
+			boxesNumber = qtyTBD / item.getPcsInBox();
+			empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
+			
+
+		}
+
 		CargoListDTO cargoListDTO = new CargoListDTO();
-		cargoListDTO.setNettoWeight(1);
+		cargoListDTO.setNettoWeight(nettoWeight);
 		cargoListDTO.setEmptiesWeight(2);
 		cargoListDTO.setBruttoWeight(3);
 		cargoListDTO.setNumberOfNotWholePallets(4);
 		cargoListDTO.setNumberOfWholePallets(5);
 		cargoListDTO.setNumberOfPallets(6);
 		cargoListDTO.setLoadingSpace(7);
-		for (CargoItem cargoItem : cargoItems) {
-
-		}
+		cargoListDTO.setEmpties(empties);
 		return cargoListDTO;
+	}
+
+	private Map<String, Integer> addEmpties(Map<String, Integer> empties, String box, Integer qty) {
+		Map<String, Integer> tmp = new TreeMap<>();
+		tmp = empties;
+		if (tmp.containsKey(box)) {
+			int a = tmp.get(box);
+			int sum = a + qty;
+			tmp.put(box, sum);
+		} else {
+			tmp.put(box, qty);
+		}
+		return tmp;
 	}
 }
 /*	
@@ -148,5 +176,5 @@ public class CargoService {
         half = sumPallets / 2;
         subtraction = half < numberOfStackablePallets ? half : numberOfStackablePallets;
         loadingSpace = sumPallets - subtraction;
-    }
-}*/
+    }*/
+

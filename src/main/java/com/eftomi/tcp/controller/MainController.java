@@ -124,7 +124,7 @@ public class MainController {
 	public String createCargoList(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menunNav", false);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", true);
@@ -141,7 +141,7 @@ public class MainController {
 	public String createCargoListSelect(Model model, ItemNumberSetDTO itemNumberSetDTO, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menunNav", false);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", true);
@@ -163,7 +163,7 @@ public class MainController {
 	public String createCargoListQuantity(Model model, HttpSession session ) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menunNav", false);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -183,7 +183,7 @@ public class MainController {
 	public String modifyQuantity(Model model, int id, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menunNav", false);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -204,7 +204,7 @@ public class MainController {
 	public String modifyCargoItem(Model model, HttpSession session, CargoItem cargoItem) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menunNav", false);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);

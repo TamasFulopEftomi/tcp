@@ -76,10 +76,46 @@ button {
 	margin: 2rem;
 }
 
+.light_green {
+	color: lightgreen;;
+}
+
+.silver {
+	color: silver;
+}
+
+.orange {
+	color: orange;
+}
+
+.light_blue {
+	color: lightblue;
+}
+
 .red {
-	background-color: red;
+	color: red;
+}
+
+.grey {
+	color: grey;
 }
 
 .green {
 	color: green;
+}
+
+.brown {
+	color: brown;
+}
+
+.blue {
+	color: blue;
+}
+
+.purple {
+	color: purple;
+}
+
+.black {
+	color: black;
 }

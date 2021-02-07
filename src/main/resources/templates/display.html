@@ -105,7 +105,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="border-bottom" th:each="box,stat : ${emptiesList}" th:class="${#strings.equals(box.boxName, 'Silver Box') ? 'silver' 
+						<tr th:each="box,stat : ${emptiesList}" th:class="${#strings.equals(box.boxName, 'Silver Box') ? 'silver' 
 						: #strings.equals(box.boxName, 'Orange Box') ? 'orange' : #strings.equals(box.boxName, 'Light Blue Box') ? 'light_blue' : #strings.equals(box.boxName, 'Red Box') ? 'red' 
 						: #strings.equals(box.boxName, 'Grey Box') ? 'grey' : #strings.equals(box.boxName, 'Green Box') ? 'green' : #strings.equals(box.boxName, 'Brown Box') ? 'brown' 
 						: #strings.equals(box.boxName, 'Blue Box') ? 'blue' : #strings.equals(box.boxName, 'Purple Box') ? 'purple' : #strings.equals(box.boxName, 'Black Box') ? 'black' 
@@ -158,15 +158,16 @@
 	<section th:if="${createCargoListMainNav}" class="container">
 		<div class="row">
 			<span class="text-center">Please note if delivered quatity rounded up to the smallest packaging unit.</span>
-		
+
 			<div class="col-lg-5 mx-auto">
-				<table class="table">
+				<table class="table caption-top border-bottom">
+				<caption>Items To Be Delivered</caption>
 					<thead>
 						<tr class="border-bottom">
 							<th>#</th>
-							<th>Item number</th>
-							<th>Quantity required</th>
-							<th>Quantity to be delivered</th>
+							<th>Item Number</th>
+							<th>Quantity Required</th>
+							<th>Quantity To Be Delivered</th>
 							<th></th>
 						</tr>
 					</thead>
@@ -188,7 +189,8 @@
 			</div>
 
 			<div class="col-lg-5 mx-auto">
-				<table class="table" th:object="${cargoListDTO}">
+				<table class="table caption-top border-bottom">
+				<caption>Cargo Details</caption>
 					<thead>
 						<tr class="border-bottom">
 							<th></th>
@@ -196,7 +198,7 @@
 							<th>Qty units</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody th:object="${cargoListDTO}">
 						<tr class="border-bottom">
 							<td>Netto weight:</td>
 							<td class="text-end" th:text="*{nettoWeight}"></td>
@@ -234,7 +236,32 @@
 						</tr>
 					</tbody>
 				</table>
-				
+
+				<table class="table caption-top border-bottom">
+				<caption>Empties List</caption>
+					<thead>
+						<tr class="border-bottom">
+							<th>#</th>
+							<th>Title</th>
+							<th class="text-end">Quantity</th>
+							<th>Qty units</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="element,stat : ${cargoListDTO.empties}" th:class="${#strings.equals(element.key, 'Silver Box') ? 'silver' 
+						: #strings.equals(element.key, 'Orange Box') ? 'orange' : #strings.equals(element.key, 'Light Blue Box') ? 'light_blue' : #strings.equals(element.key, 'Red Box') ? 'red' 
+						: #strings.equals(element.key, 'Grey Box') ? 'grey' : #strings.equals(element.key, 'Green Box') ? 'green' : #strings.equals(element.key, 'Brown Box') ? 'brown' 
+						: #strings.equals(element.key, 'Blue Box') ? 'blue' : #strings.equals(element.key, 'Purple Box') ? 'purple' : #strings.equals(element.key, 'Black Box') ? 'black' 
+						: #strings.equals(element.key, 'Light Green Box') ? 'light_green' : ''}">
+							<td class="border-bottom" th:text="${stat.count}">1</td>
+							<td class="border-bottom" th:text="${element.key}">Green Box</td>
+							<td class="border-bottom text-end" th:text="${element.value}">13</td>
+							<td class="border-bottom">pc(s)</td>
+						</tr>
+					</tbody>
+				</table>
+				<span>Color usage for transparency.</span><br>
+
 				<form th:action="@{/createCargoList}">
 					<input type="submit" value="Back to selection process"/>
 				</form><br>
