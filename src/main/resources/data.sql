@@ -16,9 +16,9 @@ INSERT INTO "PUBLIC"."BOX" VALUES
 INSERT INTO "PUBLIC"."PALLET" VALUES
 (1, 'Lattice Container Place', 'pal000', 0.0, 0.0, TRUE),
 (2, 'Wood Pallet', 'pal001', 20.0, 0.0, FALSE),
-(3, 'Wood Pallet + Plastic Roof', 'pal002', 20.0, 6.1, TRUE),
-(4, 'Plastic Pallet + Roof Type A', 'pal003', 14.31, 5.2, TRUE),
-(5, 'Plastic Pallet + Roof Type B', 'pal004', 6.5, 5.2, TRUE); 
+(3, 'Wood Pallet', 'pal002', 20.0, 6.1, TRUE),
+(4, 'Plastic Pallet Type A', 'pal003', 14.31, 5.2, TRUE),
+(5, 'Plastic Pallet Type B', 'pal004', 6.5, 5.2, TRUE); 
 INSERT INTO "PUBLIC"."ITEM" VALUES
 (1, 'NR0001', 0.31, 40, 5, 3),
 (2, 'NR0002', 0.11, 56, 5, 3),

@@ -126,6 +126,7 @@ public class CargoService {
 		Map<String, Integer> empties = new TreeMap<>();
 		double nettoWeight = 0;
 		int boxesNumber = 0;
+		int palletsNumber = 0;
 		double emptiesWeight = 0;
 		int numberOfWholePallets = 0;
 		int numberOfNotWholePallets = 0;
@@ -139,14 +140,18 @@ public class CargoService {
 			Item item = optItem.get();
 			nettoWeight += qtyTBD * item.getItemWeight();
 			boxesNumber = qtyTBD / item.getPcsInBox();
+			int pcsOnPallet = item.getPcsInBox()*item.getBox().getBoxesInRow()*item.getBox().getRowsOnPallet();
+			
+			palletsNumber += (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1; 
 			empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
+			empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
 			
 			int boxesToBeDelivered = cargoItem.getQtyToBeDelivered() / item.getPcsInBox();
 			int boxesOnPallet = item.getBox().getBoxesInRow() * item.getBox().getRowsOnPallet();
 			numberOfWholePallets += boxesToBeDelivered / boxesOnPallet;
 			numberOfNotWholePallets += (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
 			
-			emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + numberOfPallets * 
+			emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + (numberOfWholePallets + numberOfNotWholePallets) * 
 					item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
 
 			int boxesToBeDeliveredOnStackablePallet = 0;
@@ -157,7 +162,12 @@ public class CargoService {
 				numberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
 				}
 			
-			
+			int numberOfWholePalletsFromStackable = 0;
+			if (item.getPallet().getPalletType().equals("pal002") || item.getPallet().getPalletType().equals("pal003") || 
+					item.getPallet().getPalletType().equals("pal004")) {
+				numberOfWholePalletsFromStackable = qtyTBD / pcsOnPallet;
+				}
+			empties = addEmpties(empties, "Plastic Roof", numberOfWholePalletsFromStackable);
 			}
 
 		double bruttoWeight = nettoWeight + emptiesWeight;
@@ -195,17 +205,4 @@ public class CargoService {
 	}
 	
 }
-/*	
-	private  void calculateLoadingSpace() {
-        for (Pick pick : pickList) {
-            if (pick.isStackable()) {
-                numberOfStackablePallets += pick.getNumberOfWholePallets();
-            }
-        }
-        int half;
-        int subtraction;
-        half = sumPallets / 2;
-        subtraction = half < numberOfStackablePallets ? half : numberOfStackablePallets;
-        loadingSpace = sumPallets - subtraction;
-    }*/
 
