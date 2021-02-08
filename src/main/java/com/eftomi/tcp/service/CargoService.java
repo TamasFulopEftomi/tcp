@@ -142,7 +142,7 @@ public class CargoService {
 			boxesNumber = qtyTBD / item.getPcsInBox();
 			int pcsOnPallet = item.getPcsInBox()*item.getBox().getBoxesInRow()*item.getBox().getRowsOnPallet();
 			
-			palletsNumber += (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1; 
+			palletsNumber = (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1;
 			empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
 			empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
 			

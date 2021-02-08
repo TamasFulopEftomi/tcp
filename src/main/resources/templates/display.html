@@ -26,6 +26,11 @@
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
 				<div th:if="${menuNav}" class="float-start">
+					<form th:action="@{/packagingAndShippingPolicy}" target="_blank">
+						<input type="submit" value="Packaging And Shipping Policy"/>
+					</form>
+				</div>
+				<div th:if="${menuNav}" class="float-start">
 					<form th:action="@{/packagingInstruction}" target="_blank">
 						<input type="submit" value="Packaging Instruction"/>
 					</form>
@@ -51,6 +56,36 @@
 					</form>
 				</div>
 				<div class="float-end"><span>You are logged in as: </span><span th:text="${username}"></span></div>
+			</div>
+		</div>
+	</section>
+	
+	<section th:if="${packagingAndShippingPolicyNav}" class="container">
+		<div class="row">
+			<div class="col-lg-8 mx-auto">
+				
+				<h3>Packaging and Shipping policy</h3>
+				<p>1. To be delevered quatity rounded up to the smallest packaging unit.<br>
+				2. Smallest packaging unit is box, lattice box or wooden chest.<br>
+				3. In case of whole pallet with plastic boxes you need to put roof on the top the boxes, because of the stackability.<br>
+				4. Pallets can only be stacked two levels high in the truck, the lower pallet must be stackable.<br>
+				5. In case of whole pallet with cardboard boxes must not  put roof on the top the boxes.<br>
+				6. In case of not whole pallet with boxes must not put roof on the top of the boxes.<br>
+				7. Lattic boxes and wooden boxes are stackable.<br>
+				8. Different items can not be packed together.<br>
+				9. All transport units must be wrapped in a circle wih foil.<br>
+				Information from empties:
+				pallets:<br>
+				Pal000 EUR place for Box002 or Box003, stackable<br>
+				Pal001 EUR wood pallet<br>
+				Pal002 EUR wood pallet + plastic roof, stackable<br>
+				Pal003 EUR plastic pallet + plastic roof, stackable<br>
+				Pal004 EUR plastic pallet + plastic roof, stackable<br>
+				boxes:<br>
+				Box001: cardboard box<br>
+				Box002: wooden chest<br>
+				Box003: lattice box<br>
+				Box004-Box014: plastic box</p>
 			</div>
 		</div>
 	</section>
@@ -98,7 +133,7 @@
 		</div>
 	</section>
 	
-		<section th:if="${emptiesListNav}" class="container">
+	<section th:if="${emptiesListNav}" class="container">
 		<div class="row">
 			<div class="col-lg-5 mx-auto">
 				<table class="table caption-top border-bottom">
