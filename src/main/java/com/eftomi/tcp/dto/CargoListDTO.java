@@ -3,16 +3,16 @@ package com.eftomi.tcp.dto;
 import java.util.Map;
 
 public class CargoListDTO {
-	private int nettoWeight;
-	private int emptiesWeight;
-	private int bruttoWeight;
+	private double nettoWeight;
+	private double emptiesWeight;
+	private double bruttoWeight;
 	private int numberOfPallets;
 	private int numberOfWholePallets;
 	private int numberOfNotWholePallets;
 	private int loadingSpace;
 	private Map<String, Integer> empties;
 
-	public CargoListDTO(int nettoWeight, int emptiesWeight, int bruttoWeight, int numberOfPallets,
+	public CargoListDTO(double nettoWeight, double emptiesWeight, double bruttoWeight, int numberOfPallets,
 			int numberOfWholePallets, int numberOfNotWholePallets, int loadingSpace, Map<String, Integer> empties) {
 		super();
 		this.nettoWeight = nettoWeight;
@@ -29,27 +29,27 @@ public class CargoListDTO {
 		super();
 	}
 
-	public int getNettoWeight() {
+	public double getNettoWeight() {
 		return nettoWeight;
 	}
 
-	public void setNettoWeight(int nettoWeight) {
+	public void setNettoWeight(double nettoWeight) {
 		this.nettoWeight = nettoWeight;
 	}
 
-	public int getEmptiesWeight() {
+	public double getEmptiesWeight() {
 		return emptiesWeight;
 	}
 
-	public void setEmptiesWeight(int emptiesWeight) {
+	public void setEmptiesWeight(double emptiesWeight) {
 		this.emptiesWeight = emptiesWeight;
 	}
 
-	public int getBruttoWeight() {
+	public double getBruttoWeight() {
 		return bruttoWeight;
 	}
 
-	public void setBruttoWeight(int bruttoWeight) {
+	public void setBruttoWeight(double bruttoWeight) {
 		this.bruttoWeight = bruttoWeight;
 	}
 
@@ -92,6 +92,7 @@ public class CargoListDTO {
 	public void setEmpties(Map<String, Integer> empties) {
 		this.empties = empties;
 	}
+
 	
 
 }

@@ -94,7 +94,7 @@ public class MainController {
 	public String packagingInstruction(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", true);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", true);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -109,7 +109,7 @@ public class MainController {
 	public String emptiesList(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", true);
+		model.addAttribute("menuNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", true);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -163,7 +163,7 @@ public class MainController {
 	public String createCargoListQuantity(Model model, HttpSession session ) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
+		model.addAttribute("menuNav", true);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -204,7 +204,7 @@ public class MainController {
 	public String modifyCargoItem(Model model, HttpSession session, CargoItem cargoItem) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
+		model.addAttribute("menuNav", true);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);

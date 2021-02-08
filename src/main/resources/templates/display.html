@@ -26,22 +26,27 @@
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
 				<div th:if="${menuNav}" class="float-start">
-					<form th:action="@{/packagingInstruction}" class="float-start">
+					<form th:action="@{/packagingInstruction}" target="_blank">
 						<input type="submit" value="Packaging Instruction"/>
 					</form>
 				</div>
 				<div th:if="${menuNav}" class="float-start">
-					<form th:action="@{/emptiesList}" class="float-start">
+					<form th:action="@{/emptiesList}" target="_blank">
 						<input type="submit" value="Empties list"/>
 					</form>
 				</div>
 				<div th:if="${menuNav}" class="float-start">
-					<form th:action="@{/createCargoList}" class="float-start">
+					<form th:action="@{/createCargoList}">
 						<input type="submit" value="Create Cargo List"/>
 					</form>
 				</div>
+				<div th:if="${menuNav}" class="float-start">
+					<form th:action="@{/display}">
+						<input type="submit" value="Back to main page"/>
+					</form>
+				</div>
 				<div th:if="${menuNav}" class="float-end">
-					<form th:action="@{/logout}" class="float-start">
+					<form th:action="@{/logout}">
 						<input type="submit" value="Logout"/>
 					</form>
 				</div>
@@ -52,7 +57,7 @@
 	
 	<section th:if="${packagingInstructionNav}" class="container">
 		<div class="row">
-			<div class="col-lg-7 mx-auto">
+			<div class="col-lg-8 mx-auto">
 				<table class="table caption-top">
 				<caption>Packaging instruction</caption>
 					<thead>
@@ -62,6 +67,7 @@
 							<th>Weight (kg/pc)</th>
 							<th>Pallet type</th>
 							<th>Box type</th>
+							<th>Pcs in pallet</th>
 							<th>Pcs in box</th>
 							<th>Boxes in row</th>
 							<th>Rows on pallet</th>
@@ -75,6 +81,7 @@
 							<td class="text-end" th:text="*{weight}">10.4</td>
 							<td th:text="*{palletType}">pal002</td>
 							<td th:text="*{boxType}">box005</td>
+							<td class="text-end" th:text="*{pcsInBox} * *{boxesInRow} * *{rowsOnPallet}">960</td>
 							<td class="text-end" th:text="*{pcsInBox}">40</td>
 							<td class="text-end" th:text="*{boxesInRow}">8</td>
 							<td class="text-end" th:text="*{rowsOnPallet}">3</td>
@@ -220,12 +227,12 @@
 							<td>pc(s)</td>
 						</tr>
 						<tr class="border-bottom">
-							<td>Number of whole pallet(s):</td>
+							<td>- from this whole pallet(s):</td>
 							<td class="text-end" th:text="*{numberOfWholePallets}"></td>
 							<td>pc(s)</td>
 						</tr>
 						<tr class="border-bottom">
-							<td>Number of not whole pallet(s):</td>
+							<td>- from this not whole pallet(s):</td>
 							<td class="text-end" th:text="*{numberOfNotWholePallets}"></td>
 							<td>pc(s)</td>
 						</tr>
@@ -237,38 +244,33 @@
 					</tbody>
 				</table>
 
-				<table class="table caption-top border-bottom">
-				<caption>Empties List</caption>
-					<thead>
-						<tr class="border-bottom">
-							<th>#</th>
-							<th>Title</th>
-							<th class="text-end">Quantity</th>
-							<th>Qty units</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="element,stat : ${cargoListDTO.empties}" th:class="${#strings.equals(element.key, 'Silver Box') ? 'silver' 
-						: #strings.equals(element.key, 'Orange Box') ? 'orange' : #strings.equals(element.key, 'Light Blue Box') ? 'light_blue' : #strings.equals(element.key, 'Red Box') ? 'red' 
-						: #strings.equals(element.key, 'Grey Box') ? 'grey' : #strings.equals(element.key, 'Green Box') ? 'green' : #strings.equals(element.key, 'Brown Box') ? 'brown' 
-						: #strings.equals(element.key, 'Blue Box') ? 'blue' : #strings.equals(element.key, 'Purple Box') ? 'purple' : #strings.equals(element.key, 'Black Box') ? 'black' 
-						: #strings.equals(element.key, 'Light Green Box') ? 'light_green' : ''}">
-							<td class="border-bottom" th:text="${stat.count}">1</td>
-							<td class="border-bottom" th:text="${element.key}">Green Box</td>
-							<td class="border-bottom text-end" th:text="${element.value}">13</td>
-							<td class="border-bottom">pc(s)</td>
-						</tr>
-					</tbody>
-				</table>
-				<span>Color usage for transparency.</span><br>
+				<div th:unless ="${cargoListDTO.empties.isEmpty}">
+					<table class="table caption-top border-bottom">
+					<caption>Empties List</caption>
+						<thead>
+							<tr class="border-bottom">
+								<th>#</th>
+								<th>Title</th>
+								<th class="text-end">Quantity</th>
+								<th>Qty units</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="element,stat : ${cargoListDTO.empties}" th:class="${#strings.equals(element.key, 'Silver Box') ? 'silver' 
+							: #strings.equals(element.key, 'Orange Box') ? 'orange' : #strings.equals(element.key, 'Light Blue Box') ? 'light_blue' : #strings.equals(element.key, 'Red Box') ? 'red' 
+							: #strings.equals(element.key, 'Grey Box') ? 'grey' : #strings.equals(element.key, 'Green Box') ? 'green' : #strings.equals(element.key, 'Brown Box') ? 'brown' 
+							: #strings.equals(element.key, 'Blue Box') ? 'blue' : #strings.equals(element.key, 'Purple Box') ? 'purple' : #strings.equals(element.key, 'Black Box') ? 'black' 
+							: #strings.equals(element.key, 'Light Green Box') ? 'light_green' : ''}">
+								<td class="border-bottom" th:text="${stat.count}">1</td>
+								<td class="border-bottom" th:text="${element.key}">Green Box</td>
+								<td class="border-bottom text-end" th:text="${element.value}">13</td>
+								<td class="border-bottom">pc(s)</td>
+							</tr>
+						</tbody>
+					</table>
+					<span>Color usage for transparency.</span>
+				</div><br>
 
-				<form th:action="@{/createCargoList}">
-					<input type="submit" value="Back to selection process"/>
-				</form><br>
-				<form th:action="@{/display}">
-					<input type="submit" value="Back to main page"/>
-				</form>
-				
 			</div>
 			
 		</div>

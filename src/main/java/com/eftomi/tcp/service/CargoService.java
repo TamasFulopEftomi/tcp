@@ -124,9 +124,12 @@ public class CargoService {
 	
 	public CargoListDTO calculateCargo(List<CargoItem> cargoItems) {
 		Map<String, Integer> empties = new TreeMap<>();
-		int nettoWeight = 0;
+		double nettoWeight = 0;
 		int boxesNumber = 0;
-		int emptiesWeight = 0;
+		double emptiesWeight = 0;
+		int numberOfWholePallets = 0;
+		int numberOfNotWholePallets = 0;
+		int numberOfPallets = 0;
 		for (CargoItem cargoItem : cargoItems) {
 			String itemNo = cargoItem.getItemNumber();
 			int qtyTBD = cargoItem.getQtyToBeDelivered();
@@ -136,33 +139,42 @@ public class CargoService {
 			boxesNumber = qtyTBD / item.getPcsInBox();
 			empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
 			
+			int boxesToBeDelivered = cargoItem.getQtyToBeDelivered() / item.getPcsInBox();
+			int boxesOnPallet = item.getBox().getBoxesInRow() * item.getBox().getRowsOnPallet();
+			numberOfWholePallets += boxesToBeDelivered / boxesOnPallet;
+			numberOfNotWholePallets += (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
+			numberOfPallets += numberOfWholePallets + numberOfNotWholePallets;
+			
+			emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + numberOfPallets * item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
+			}
 
-		}
-
+		double bruttoWeight = nettoWeight + emptiesWeight;
+		
 		CargoListDTO cargoListDTO = new CargoListDTO();
 		cargoListDTO.setNettoWeight(nettoWeight);
-		cargoListDTO.setEmptiesWeight(2);
-		cargoListDTO.setBruttoWeight(3);
-		cargoListDTO.setNumberOfNotWholePallets(4);
-		cargoListDTO.setNumberOfWholePallets(5);
-		cargoListDTO.setNumberOfPallets(6);
-		cargoListDTO.setLoadingSpace(7);
+		cargoListDTO.setEmptiesWeight(emptiesWeight);
+		cargoListDTO.setBruttoWeight(bruttoWeight);
+		cargoListDTO.setNumberOfNotWholePallets(numberOfNotWholePallets);
+		cargoListDTO.setNumberOfWholePallets(numberOfWholePallets);
+		cargoListDTO.setNumberOfPallets(numberOfPallets);
+		cargoListDTO.setLoadingSpace(0);
 		cargoListDTO.setEmpties(empties);
 		return cargoListDTO;
 	}
 
 	private Map<String, Integer> addEmpties(Map<String, Integer> empties, String box, Integer qty) {
-		Map<String, Integer> tmp = new TreeMap<>();
+		Map<String, Integer> tmp;;
 		tmp = empties;
 		if (tmp.containsKey(box)) {
 			int a = tmp.get(box);
 			int sum = a + qty;
 			tmp.put(box, sum);
-		} else {
+		} else if (qty > 0) {
 			tmp.put(box, qty);
 		}
 		return tmp;
 	}
+	
 }
 /*	
 	private  void calculateLoadingSpace() {
