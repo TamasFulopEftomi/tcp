@@ -130,6 +130,8 @@ public class CargoService {
 		int numberOfWholePallets = 0;
 		int numberOfNotWholePallets = 0;
 		int numberOfPallets = 0;
+		int numberOfStackablePallets = 0;
+		
 		for (CargoItem cargoItem : cargoItems) {
 			String itemNo = cargoItem.getItemNumber();
 			int qtyTBD = cargoItem.getQtyToBeDelivered();
@@ -143,12 +145,29 @@ public class CargoService {
 			int boxesOnPallet = item.getBox().getBoxesInRow() * item.getBox().getRowsOnPallet();
 			numberOfWholePallets += boxesToBeDelivered / boxesOnPallet;
 			numberOfNotWholePallets += (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
-			numberOfPallets += numberOfWholePallets + numberOfNotWholePallets;
 			
-			emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + numberOfPallets * item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
+			emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + numberOfPallets * 
+					item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
+
+			int boxesToBeDeliveredOnStackablePallet = 0;
+			int boxesOnStackablePallet = 0;
+			if (item.getPallet().isStackable()) {
+				boxesToBeDeliveredOnStackablePallet = cargoItem.getQtyToBeDelivered() / item.getPcsInBox();
+				boxesOnStackablePallet = item.getBox().getBoxesInRow() * item.getBox().getRowsOnPallet();
+				numberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
+				}
+			
+			
 			}
 
 		double bruttoWeight = nettoWeight + emptiesWeight;
+		numberOfPallets = numberOfWholePallets + numberOfNotWholePallets;
+		int half;
+		int subtraction;
+		
+		half = numberOfPallets / 2;
+		subtraction = half < numberOfStackablePallets ? half : numberOfStackablePallets;
+		int loadingSpace = numberOfPallets - subtraction;
 		
 		CargoListDTO cargoListDTO = new CargoListDTO();
 		cargoListDTO.setNettoWeight(nettoWeight);
@@ -157,7 +176,7 @@ public class CargoService {
 		cargoListDTO.setNumberOfNotWholePallets(numberOfNotWholePallets);
 		cargoListDTO.setNumberOfWholePallets(numberOfWholePallets);
 		cargoListDTO.setNumberOfPallets(numberOfPallets);
-		cargoListDTO.setLoadingSpace(0);
+		cargoListDTO.setLoadingSpace(loadingSpace);
 		cargoListDTO.setEmpties(empties);
 		return cargoListDTO;
 	}
