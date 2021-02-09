@@ -135,8 +135,8 @@ public class CargoService {
 		Map<String, Integer> empties = new TreeMap<>();
 		double nettoWeight = 0;
 		double emptiesWeight = 0;
-		int numberOfWholePallets = 0;
-		int numberOfNotWholePallets = 0;
+		int sumOfWholePallets = 0;
+		int sumOfNotWholePallets = 0;
 		int numberOfPallets = 0;
 		int numberOfStackablePallets = 0;
 		
@@ -154,20 +154,24 @@ public class CargoService {
 				
 				nettoWeight += qtyTBD * item.getItemWeight();
 				int boxesNumber = qtyTBD / pcsInBox;
-				int pcsOnPallet = pcsInBox*boxesInRow*rowsOnPallet;
+				int pcsOnPallet = pcsInBox * boxesInRow * rowsOnPallet;
 				
 				int palletsNumber = (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1;
 				empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
 				empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
 				
 				int boxesToBeDelivered = cargoItem.getQtyToBeDelivered() / pcsInBox;
-				int boxesOnPallet = boxesInRow * rowsOnPallet;
-				numberOfWholePallets += boxesToBeDelivered / boxesOnPallet;
-				numberOfNotWholePallets += (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
+				int boxesOnPallet = boxesInRow * rowsOnPallet;  //Itt a bibi
+				int numberOfWholePallets = boxesToBeDelivered / boxesOnPallet;
+				int numberOfNotWholePallets = (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
 				
-				emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + (numberOfWholePallets + numberOfNotWholePallets) * 
+				sumOfWholePallets += numberOfWholePallets;
+				sumOfNotWholePallets += numberOfNotWholePallets;
+				
+				double palletsAndRoofsWeight = (numberOfWholePallets + numberOfNotWholePallets) * 
 						item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
-	
+				emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + palletsAndRoofsWeight;
+						
 				int boxesToBeDeliveredOnStackablePallet = 0;
 				int boxesOnStackablePallet = 0;
 				if (item.getPallet().isStackable()) {
@@ -186,7 +190,7 @@ public class CargoService {
 			}
 		}
 		double bruttoWeight = nettoWeight + emptiesWeight;
-		numberOfPallets = numberOfWholePallets + numberOfNotWholePallets;
+		numberOfPallets = sumOfWholePallets + sumOfNotWholePallets;
 		int half;
 		int subtraction;
 		
@@ -198,8 +202,8 @@ public class CargoService {
 		cargoListDTO.setNettoWeight(nettoWeight);
 		cargoListDTO.setEmptiesWeight(emptiesWeight);
 		cargoListDTO.setBruttoWeight(bruttoWeight);
-		cargoListDTO.setNumberOfNotWholePallets(numberOfNotWholePallets);
-		cargoListDTO.setNumberOfWholePallets(numberOfWholePallets);
+		cargoListDTO.setNumberOfNotWholePallets(sumOfNotWholePallets);
+		cargoListDTO.setNumberOfWholePallets(sumOfWholePallets);
 		cargoListDTO.setNumberOfPallets(numberOfPallets);
 		cargoListDTO.setLoadingSpace(loadingSpace);
 		cargoListDTO.setEmpties(empties);
