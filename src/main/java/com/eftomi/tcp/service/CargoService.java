@@ -125,8 +125,6 @@ public class CargoService {
 	public CargoListDTO calculateCargo(List<CargoItem> cargoItems) {
 		Map<String, Integer> empties = new TreeMap<>();
 		double nettoWeight = 0;
-		int boxesNumber = 0;
-		int palletsNumber = 0;
 		double emptiesWeight = 0;
 		int numberOfWholePallets = 0;
 		int numberOfNotWholePallets = 0;
@@ -134,42 +132,50 @@ public class CargoService {
 		int numberOfStackablePallets = 0;
 		
 		for (CargoItem cargoItem : cargoItems) {
-			String itemNo = cargoItem.getItemNumber();
-			int qtyTBD = cargoItem.getQtyToBeDelivered();
-			Optional<Item> optItem = itemDAO.findByItemNo(itemNo);
-			Item item = optItem.get();
-			nettoWeight += qtyTBD * item.getItemWeight();
-			boxesNumber = qtyTBD / item.getPcsInBox();
-			int pcsOnPallet = item.getPcsInBox()*item.getBox().getBoxesInRow()*item.getBox().getRowsOnPallet();
-			
-			palletsNumber = (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1;
-			empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
-			empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
-			
-			int boxesToBeDelivered = cargoItem.getQtyToBeDelivered() / item.getPcsInBox();
-			int boxesOnPallet = item.getBox().getBoxesInRow() * item.getBox().getRowsOnPallet();
-			numberOfWholePallets += boxesToBeDelivered / boxesOnPallet;
-			numberOfNotWholePallets += (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
-			
-			emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + (numberOfWholePallets + numberOfNotWholePallets) * 
-					item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
-
-			int boxesToBeDeliveredOnStackablePallet = 0;
-			int boxesOnStackablePallet = 0;
-			if (item.getPallet().isStackable()) {
-				boxesToBeDeliveredOnStackablePallet = cargoItem.getQtyToBeDelivered() / item.getPcsInBox();
-				boxesOnStackablePallet = item.getBox().getBoxesInRow() * item.getBox().getRowsOnPallet();
-				numberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
-				}
-			
-			int numberOfWholePalletsFromStackable = 0;
-			if (item.getPallet().getPalletType().equals("pal002") || item.getPallet().getPalletType().equals("pal003") || 
-					item.getPallet().getPalletType().equals("pal004")) {
-				numberOfWholePalletsFromStackable = qtyTBD / pcsOnPallet;
-				}
-			empties = addEmpties(empties, "Plastic Roof", numberOfWholePalletsFromStackable);
+			Optional<Item> optItem = itemDAO.findByItemNo(cargoItem.getItemNumber());
+			if (optItem.isPresent()) {
+				Item item = optItem.get();
+				
+				//Helping variables for speed
+				int qtyTBD = cargoItem.getQtyToBeDelivered();
+				int pcsInBox = item.getPcsInBox();
+				int boxesInRow = item.getBox().getBoxesInRow();
+				int rowsOnPallet = item.getBox().getRowsOnPallet();
+				String palletType = item.getPallet().getPalletType();
+				
+				nettoWeight += qtyTBD * item.getItemWeight();
+				int boxesNumber = qtyTBD / pcsInBox;
+				int pcsOnPallet = pcsInBox*boxesInRow*rowsOnPallet;
+				
+				int palletsNumber = (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1;
+				empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
+				empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
+				
+				int boxesToBeDelivered = cargoItem.getQtyToBeDelivered() / pcsInBox;
+				int boxesOnPallet = boxesInRow * rowsOnPallet;
+				numberOfWholePallets += boxesToBeDelivered / boxesOnPallet;
+				numberOfNotWholePallets += (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
+				
+				emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + (numberOfWholePallets + numberOfNotWholePallets) * 
+						item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
+	
+				int boxesToBeDeliveredOnStackablePallet = 0;
+				int boxesOnStackablePallet = 0;
+				if (item.getPallet().isStackable()) {
+					boxesToBeDeliveredOnStackablePallet = cargoItem.getQtyToBeDelivered() / pcsInBox;
+					boxesOnStackablePallet = boxesInRow * rowsOnPallet;
+					numberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
+					}
+				
+				int numberOfWholePalletsFromStackable = 0;
+				if (palletType.equals("pal002") || palletType.equals("pal003") || palletType.equals("pal004")) {
+					numberOfWholePalletsFromStackable = qtyTBD / pcsOnPallet;
+					}
+				empties = addEmpties(empties, "Plastic Roof", numberOfWholePalletsFromStackable);
+			} else {
+				throw new CargoItemNotFoundException(cargoItem.getId());
 			}
-
+		}
 		double bruttoWeight = nettoWeight + emptiesWeight;
 		numberOfPallets = numberOfWholePallets + numberOfNotWholePallets;
 		int half;
@@ -192,7 +198,7 @@ public class CargoService {
 	}
 
 	private Map<String, Integer> addEmpties(Map<String, Integer> empties, String box, Integer qty) {
-		Map<String, Integer> tmp;;
+		Map<String, Integer> tmp;
 		tmp = empties;
 		if (tmp.containsKey(box)) {
 			int a = tmp.get(box);

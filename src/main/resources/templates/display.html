@@ -16,7 +16,6 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="shortcut icon" type="image/x-icon" href="assets/code.ico">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
 	<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Mulish&family=Raleway&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
 	<link rel="stylesheet" type="text/css" href="main.css">
@@ -26,8 +25,8 @@
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
 				<div th:if="${menuNav}" class="float-start">
-					<form th:action="@{/packagingAndShippingPolicy}" target="_blank">
-						<input type="submit" value="Packaging And Shipping Policy"/>
+					<form th:action="@{/packagingPolicy}" target="_blank">
+						<input type="submit" value="Packaging Policy"/>
 					</form>
 				</div>
 				<div th:if="${menuNav}" class="float-start">
@@ -60,11 +59,23 @@
 		</div>
 	</section>
 	
-	<section th:if="${packagingAndShippingPolicyNav}" class="container">
+	<section th:if="${aboutNav}" class="container">
 		<div class="row">
 			<div class="col-lg-8 mx-auto">
 				
-				<h3>Packaging and Shipping policy</h3>
+			<p>The software operates in the field of bulk goods in the central warehouse of a small machine parts manufacturer and distributor.
+				The coordinator can make packing instructions and plans the cargo of the trucks arriving for delivery with usage of this software.
+				The items to be shipped have different packaging instructions.
+				An unlimited amount of different types of products and empties are available in the warehouse.</p>
+			</div>
+		</div>
+	</section>
+	
+	<section th:if="${packagingPolicyNav}" class="container">
+		<div class="row">
+			<div class="col-lg-8 mx-auto">
+				
+				<h4>Packaging policy</h4>
 				<p>1. To be delevered quatity rounded up to the smallest packaging unit.<br>
 				2. Smallest packaging unit is box, lattice box or wooden chest.<br>
 				3. In case of whole pallet with plastic boxes you need to put roof on the top the boxes, because of the stackability.<br>
@@ -172,7 +183,7 @@
 	<section th:if="${createCargoListSelectNav}" id="list_select" class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
-			<h3>Please select the item numbers of products to be delivered and click the Submit button below!</h3>
+			<p>Please select the item numbers of products to be delivered and click the Submit button below!</p>
 				<form action="#" th:action="@{/createCargoListSelect}" th:object="${itemNumberSetDTO}" method="post">
 				<ul>
 					<li th:each="iMap : ${itemMap}">
@@ -183,13 +194,15 @@
 					<input type="submit" value="Submit">
 				</form><br>
 				<div th:if="${list}">
-					<h3>You have selected out the following items for shipping:</h3><br>
-						<span th:text="${list}"></span><br><br>
-					<h3>If you want to deliver these goods please click the Next button to add quantities to the list, otherwise repeat the selection process!</h3><br>
+					<p>You have selected out the following items for shipping: <strong><span th:text="${list}"></span></strong></p>
+
+					<p>If you want to deliver the goods you selected please click the "Add quantities" button, otherwise select new items and push submit button again!</p><br>
+					<div class="float-end">
 					<form th:action="@{/createCargoListQuantity}" method="post">
-						<input type="submit" value="Next"/>
+						<input type="submit" value="Add quantities"/>
 					</form>
-				</div><br>
+					</div>
+				</div>
 				<form th:action="@{/display}">
 					<input type="submit" value="Back to main page"/>
 				</form>

@@ -81,7 +81,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", true);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -91,12 +92,13 @@ public class MainController {
 		return "display";
 	}
 	
-	@GetMapping("/packagingAndShippingPolicy")
-	public String packagingAndShippingPolicy(Model model, HttpSession session) {
+	@GetMapping("/packagingPolicy")
+	public String packagingPolicy(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", false);
-		model.addAttribute("packagingAndShippingPolicyNav", true);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", true);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -111,7 +113,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", false);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", true);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -127,7 +130,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", false);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", true);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -143,7 +147,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", false);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", true);
@@ -161,7 +166,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", false);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", true);
@@ -184,7 +190,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -205,7 +212,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", false);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
@@ -227,7 +235,8 @@ public class MainController {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		model.addAttribute("menuNav", true);
-		model.addAttribute("packagingAndShippingPolicyNav", false);
+		model.addAttribute("aboutNav", false);
+		model.addAttribute("packagingPolicyNav", false);
 		model.addAttribute("packagingInstructionNav", false);
 		model.addAttribute("emptiesListNav", false);
 		model.addAttribute("createCargoListSelectNav", false);
