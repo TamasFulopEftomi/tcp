@@ -133,18 +133,17 @@ public class CargoService {
 	
 	public CargoListDTO calculateCargo(List<CargoItem> cargoItems) {
 		Map<String, Integer> empties = new TreeMap<>();
-		double nettoWeight = 0;
-		double emptiesWeight = 0;
+		double sumNettoWeight = 0;
+		double sumEmptiesWeight = 0;
 		int sumOfWholePallets = 0;
 		int sumOfNotWholePallets = 0;
-		int numberOfPallets = 0;
-		int numberOfStackablePallets = 0;
+		int sumNumberOfStackablePallets = 0;
 		
 		for (CargoItem cargoItem : cargoItems) {
 			Optional<Item> optItem = itemDAO.findByItemNo(cargoItem.getItemNumber());
 			if (optItem.isPresent()) {
 				Item item = optItem.get();
-				
+
 				//Helping variables for speed
 				int qtyTBD = cargoItem.getQtyToBeDelivered();
 				int pcsInBox = item.getPcsInBox();
@@ -152,75 +151,83 @@ public class CargoService {
 				int rowsOnPallet = item.getBox().getRowsOnPallet();
 				String palletType = item.getPallet().getPalletType();
 				
-				nettoWeight += qtyTBD * item.getItemWeight();
-				int boxesNumber = qtyTBD / pcsInBox;
-				int pcsOnPallet = pcsInBox * boxesInRow * rowsOnPallet;
-				
-				int palletsNumber = (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1;
-				empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
-				empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
-				
-				int boxesToBeDelivered = cargoItem.getQtyToBeDelivered() / pcsInBox;
-				int boxesOnPallet = boxesInRow * rowsOnPallet;  //Itt a bibi
+				//calculate netto weight
+				sumNettoWeight += qtyTBD * item.getItemWeight();
+
+				//calculate empties weight
+				int boxesToBeDelivered = qtyTBD / pcsInBox;
+				int boxesOnPallet = boxesInRow * rowsOnPallet;
 				int numberOfWholePallets = boxesToBeDelivered / boxesOnPallet;
 				int numberOfNotWholePallets = (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
-				
-				sumOfWholePallets += numberOfWholePallets;
-				sumOfNotWholePallets += numberOfNotWholePallets;
-				
 				double palletsAndRoofsWeight = (numberOfWholePallets + numberOfNotWholePallets) * 
 						item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
-				emptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + palletsAndRoofsWeight;
-						
+				sumEmptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + palletsAndRoofsWeight;
+				
+				//calculate whole pallets and not whole pallets
+				sumOfWholePallets += numberOfWholePallets;
+				sumOfNotWholePallets += numberOfNotWholePallets;
+
+				//calculate cargo space I.
 				int boxesToBeDeliveredOnStackablePallet = 0;
 				int boxesOnStackablePallet = 0;
 				if (item.getPallet().isStackable()) {
-					boxesToBeDeliveredOnStackablePallet = cargoItem.getQtyToBeDelivered() / pcsInBox;
+					boxesToBeDeliveredOnStackablePallet = qtyTBD / pcsInBox;
 					boxesOnStackablePallet = boxesInRow * rowsOnPallet;
-					numberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
+					sumNumberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
 					}
-				
+
+				//prepare and create empties list
+				int boxesNumber = qtyTBD / pcsInBox;
+				int pcsOnPallet = pcsInBox * boxesInRow * rowsOnPallet;
+				int palletsNumber = (qtyTBD % pcsOnPallet == 0) ? qtyTBD / pcsOnPallet : qtyTBD / pcsOnPallet + 1;
 				int numberOfWholePalletsFromStackable = 0;
 				if (palletType.equals("pal002") || palletType.equals("pal003") || palletType.equals("pal004")) {
 					numberOfWholePalletsFromStackable = qtyTBD / pcsOnPallet;
 					}
+				empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
+				empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
 				empties = addEmpties(empties, "Plastic Roof", numberOfWholePalletsFromStackable);
 			} else {
 				throw new CargoItemNotFoundException(cargoItem.getId());
 			}
 		}
-		double bruttoWeight = nettoWeight + emptiesWeight;
-		numberOfPallets = sumOfWholePallets + sumOfNotWholePallets;
+
+		//calculate grossWeight
+		double bruttoWeight = sumNettoWeight + sumEmptiesWeight;
+
+		//calculate number of pallets
+		int sumNumberOfPallets = sumOfWholePallets + sumOfNotWholePallets;
+
+		//calculate cargo space II.
 		int half;
 		int subtraction;
-		
-		half = numberOfPallets / 2;
-		subtraction = half < numberOfStackablePallets ? half : numberOfStackablePallets;
-		int loadingSpace = numberOfPallets - subtraction;
-		
+		half = sumNumberOfPallets / 2;
+		subtraction = half < sumNumberOfStackablePallets ? half : sumNumberOfStackablePallets;
+		int loadingSpace = sumNumberOfPallets - subtraction;
+
 		CargoListDTO cargoListDTO = new CargoListDTO();
-		cargoListDTO.setNettoWeight(nettoWeight);
-		cargoListDTO.setEmptiesWeight(emptiesWeight);
+		cargoListDTO.setNettoWeight(sumNettoWeight);
+		cargoListDTO.setEmptiesWeight(sumEmptiesWeight);
 		cargoListDTO.setBruttoWeight(bruttoWeight);
 		cargoListDTO.setNumberOfNotWholePallets(sumOfNotWholePallets);
 		cargoListDTO.setNumberOfWholePallets(sumOfWholePallets);
-		cargoListDTO.setNumberOfPallets(numberOfPallets);
+		cargoListDTO.setNumberOfPallets(sumNumberOfPallets);
 		cargoListDTO.setLoadingSpace(loadingSpace);
 		cargoListDTO.setEmpties(empties);
 		return cargoListDTO;
 	}
 
-	private Map<String, Integer> addEmpties(Map<String, Integer> empties, String box, Integer qty) {
-		Map<String, Integer> tmp;
-		tmp = empties;
-		if (tmp.containsKey(box)) {
-			int a = tmp.get(box);
-			int sum = a + qty;
-			tmp.put(box, sum);
-		} else if (qty > 0) {
-			tmp.put(box, qty);
+	private Map<String, Integer> addEmpties(Map<String, Integer> emptiesMap, String empties, Integer qty) {
+		Map<String, Integer> tempMap;
+		tempMap= emptiesMap;
+		if (tempMap.containsKey(empties)) {
+			int emptiesValue = tempMap.get(empties);
+			int sum = emptiesValue + qty;
+			tempMap.put(empties, sum);
+		} else if (qty > 0 && !empties.equals("EUR Place")) {
+			tempMap.put(empties, qty);
 		}
-		return tmp;
+		return tempMap;
 	}
 	
 }
