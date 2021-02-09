@@ -138,7 +138,8 @@ public class MainController {
 		model.addAttribute("createCargoListMainNav", false);
 		model.addAttribute("modifyQuantityNav", false);
 		
-		model.addAttribute("emptiesList", cargoService.emptiesList());
+		model.addAttribute("boxesAndContainersList", cargoService.boxesAndContainersList());
+		model.addAttribute("palletsAndRoofsList", cargoService.palletsAndRoofsList());
 		return "display";
 	}
 	

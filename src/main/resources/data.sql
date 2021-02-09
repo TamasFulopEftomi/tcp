@@ -14,7 +14,7 @@ INSERT INTO "PUBLIC"."BOX" VALUES
 (13, 'Purple Box', 'box013', 2.0, 4, 3),
 (14, 'Black Box', 'box014', 4.5, 4, 2);
 INSERT INTO "PUBLIC"."PALLET" VALUES
-(1, 'Lattice Container Place', 'pal000', 0.0, 0.0, TRUE),
+(1, 'EUR Place', 'pal000', 0.0, 0.0, TRUE),
 (2, 'Wood Pallet', 'pal001', 20.0, 0.0, FALSE),
 (3, 'Wood Pallet', 'pal002', 20.0, 6.1, TRUE),
 (4, 'Plastic Pallet Type A', 'pal003', 14.31, 5.2, TRUE),

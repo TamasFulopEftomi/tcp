@@ -146,7 +146,7 @@
 	
 	<section th:if="${emptiesListNav}" class="container">
 		<div class="row">
-			<div class="col-lg-5 mx-auto">
+			<div class="col-lg-6 mx-auto">
 				<table class="table caption-top border-bottom">
 				<caption>Boxes and containers list</caption>
 					<thead>
@@ -158,7 +158,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="box,stat : ${emptiesList}" th:class="${#strings.equals(box.boxName, 'Silver Box') ? 'silver' 
+						<tr th:each="box,stat : ${boxesAndContainersList}" th:class="${#strings.equals(box.boxName, 'Silver Box') ? 'silver' 
 						: #strings.equals(box.boxName, 'Orange Box') ? 'orange' : #strings.equals(box.boxName, 'Light Blue Box') ? 'light_blue' : #strings.equals(box.boxName, 'Red Box') ? 'red' 
 						: #strings.equals(box.boxName, 'Grey Box') ? 'grey' : #strings.equals(box.boxName, 'Green Box') ? 'green' : #strings.equals(box.boxName, 'Brown Box') ? 'brown' 
 						: #strings.equals(box.boxName, 'Blue Box') ? 'blue' : #strings.equals(box.boxName, 'Purple Box') ? 'purple' : #strings.equals(box.boxName, 'Black Box') ? 'black' 
@@ -176,6 +176,35 @@
 					</tbody>
 				</table>
 				<span>Color usage for transparency.</span>
+			</div>
+			
+			<div class="col-lg-6 mx-auto">
+				<table class="table caption-top border-bottom">
+				<caption>Pallets and roofs list</caption>
+					<thead>
+						<tr class="border-bottom">
+							<th>#</th>
+							<th>Type</th>
+							<th>Name</th>
+							<th>Pallet (kg/pc)</th>
+							<th>Roof (kg/pc)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pallet,stat : ${palletsAndRoofsList}">
+							<td class="border-bottom" th:text="${stat.count}">1</td>
+							<td class="border-bottom" th:text="${pallet.palletType}">box001</td>
+							<td class="border-bottom" th:text="${pallet.palletName}">Cardboard Box</td>
+							<td class="border-bottom text-end" th:text="${pallet.palletWeight}">1.0</td>
+							<td class="border-bottom text-end" th:text="${pallet.roofWeight}">1.0</td>
+						</tr>
+						<tr th:remove="all">
+							<td>2</td>
+							<td>Nr0002</td>
+							<td>108</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</section>

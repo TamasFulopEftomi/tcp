@@ -15,9 +15,11 @@ import com.eftomi.tcp.dto.PackagingInstructionDTO;
 import com.eftomi.tcp.entity.Box;
 import com.eftomi.tcp.entity.CargoItem;
 import com.eftomi.tcp.entity.Item;
+import com.eftomi.tcp.entity.Pallet;
 import com.eftomi.tcp.repository.BoxRepository;
 import com.eftomi.tcp.repository.CargoItemRepository;
 import com.eftomi.tcp.repository.ItemRepository;
+import com.eftomi.tcp.repository.PalletRepository;
 import com.eftomi.tcp.service.exception.CargoItemNotFoundException;
 import com.eftomi.tcp.service.exception.ItemNotFoundException;
 
@@ -29,6 +31,9 @@ public class CargoService {
 	
 	@Autowired
 	private BoxRepository boxDAO;
+	
+	@Autowired
+	private PalletRepository palletDAO;
 	
 	@Autowired
 	private CargoItemRepository cargoItemDAO;
@@ -55,8 +60,12 @@ public class CargoService {
 		return pIDTOList;
 	}
 	
-	public List<Box> emptiesList() {
+	public List<Box> boxesAndContainersList() {
 		return boxDAO.findAll();
+	}
+	
+	public List<Pallet> palletsAndRoofsList() {
+		return palletDAO.findAll();
 	}
 	
 	public Map<String, String> getItemNumberMap() {
