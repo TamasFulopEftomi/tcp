@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.eftomi.tcp.dto.CargoListDTO;
+import com.eftomi.tcp.dto.DisplaySectionDTO;
 import com.eftomi.tcp.dto.ItemNumberSetDTO;
 import com.eftomi.tcp.dto.LoginDTO;
 import com.eftomi.tcp.dto.RegistrationDTO;
@@ -80,14 +81,11 @@ public class MainController {
 	public String display(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", true);
-		model.addAttribute("aboutNav", true);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setMenuNav(true);
+		displaySectionDTO.setAboutNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		return "display";
 	}
@@ -96,14 +94,10 @@ public class MainController {
 	public String packagingPolicy(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", true);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setPackagingPolicyNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		return "display";
 	}
@@ -112,14 +106,10 @@ public class MainController {
 	public String packagingInstruction(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", true);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setPackagingInstructionNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		model.addAttribute("packagingInstruction", cargoService.packagingInstruction());
 		return "display";
@@ -129,14 +119,10 @@ public class MainController {
 	public String emptiesList(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", true);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setEmptiesListNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		model.addAttribute("boxesAndContainersList", cargoService.boxesAndContainersList());
 		model.addAttribute("palletsAndRoofsList", cargoService.palletsAndRoofsList());
@@ -147,14 +133,10 @@ public class MainController {
 	public String createCargoList(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", true);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setCreateCargoListSelectNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);	
 		
 		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
@@ -166,14 +148,10 @@ public class MainController {
 	public String createCargoListSelect(Model model, ItemNumberSetDTO itemNumberSetDTO, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", true);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setCreateCargoListSelectNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		session.setAttribute("itemNumberSetDTO", itemNumberSetDTO);
 		String list = itemNumberSetDTO.getItemNumberSet().stream()
@@ -190,14 +168,11 @@ public class MainController {
 	public String createCargoListQuantity(Model model, HttpSession session ) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", true);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", true);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setMenuNav(true);
+		displaySectionDTO.setCreateCargoListMainNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
 		cargoService.cargoListCreate(itemNumberSetDTO.getItemNumberSet());
@@ -212,14 +187,10 @@ public class MainController {
 	public String modifyQuantity(Model model, int id, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", false);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", false);
-		model.addAttribute("modifyQuantityNav", true);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setModifyQuantityNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		Optional<CargoItem> optCargoItem = cargoService.getCargoItem(id);
 		if (optCargoItem.isPresent()) {
@@ -235,14 +206,11 @@ public class MainController {
 	public String modifyCargoItem(Model model, HttpSession session, CargoItem cargoItem) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		model.addAttribute("menuNav", true);
-		model.addAttribute("aboutNav", false);
-		model.addAttribute("packagingPolicyNav", false);
-		model.addAttribute("packagingInstructionNav", false);
-		model.addAttribute("emptiesListNav", false);
-		model.addAttribute("createCargoListSelectNav", false);
-		model.addAttribute("createCargoListMainNav", true);
-		model.addAttribute("modifyQuantityNav", false);
+		
+		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+		displaySectionDTO.setMenuNav(true);
+		displaySectionDTO.setCreateCargoListMainNav(true);
+		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		cargoService.calculateCargoItemQuantities(cargoItem);
 		List<CargoItem> cargoItemList = cargoService.getAllCargoItems();

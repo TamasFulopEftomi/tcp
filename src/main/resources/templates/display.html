@@ -24,32 +24,32 @@
 	<section class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
-				<div th:if="${menuNav}" class="float-start">
+				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
 					<form th:action="@{/packagingPolicy}" target="_blank">
 						<input type="submit" value="Packaging Policy"/>
 					</form>
 				</div>
-				<div th:if="${menuNav}" class="float-start">
+				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
 					<form th:action="@{/packagingInstruction}" target="_blank">
 						<input type="submit" value="Packaging Instruction"/>
 					</form>
 				</div>
-				<div th:if="${menuNav}" class="float-start">
+				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
 					<form th:action="@{/emptiesList}" target="_blank">
 						<input type="submit" value="Empties list"/>
 					</form>
 				</div>
-				<div th:if="${menuNav}" class="float-start">
+				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
 					<form th:action="@{/createCargoList}">
 						<input type="submit" value="Create Cargo List"/>
 					</form>
 				</div>
-				<div th:if="${menuNav}" class="float-start">
+				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
 					<form th:action="@{/display}">
 						<input type="submit" value="Back to main page"/>
 					</form>
 				</div>
-				<div th:if="${menuNav}" class="float-end">
+				<div th:if="${displaySectionDTO.menuNav}" class="float-end">
 					<form th:action="@{/logout}">
 						<input type="submit" value="Logout"/>
 					</form>
@@ -59,7 +59,7 @@
 		</div>
 	</section>
 	
-	<section th:if="${aboutNav}" class="container">
+	<section th:if="${displaySectionDTO.aboutNav}" class="container">
 		<div class="row">
 			<div class="col-lg-8 mx-auto">
 				
@@ -71,7 +71,7 @@
 		</div>
 	</section>
 	
-	<section th:if="${packagingPolicyNav}" class="container">
+	<section th:if="${displaySectionDTO.packagingPolicyNav}" class="container">
 		<div class="row">
 			<div class="col-lg-8 mx-auto">
 				
@@ -101,7 +101,7 @@
 		</div>
 	</section>
 	
-	<section th:if="${packagingInstructionNav}" class="container">
+	<section th:if="${displaySectionDTO.packagingInstructionNav}" class="container">
 		<div class="row">
 			<div class="col-lg-8 mx-auto">
 				<table class="table caption-top">
@@ -144,7 +144,7 @@
 		</div>
 	</section>
 	
-	<section th:if="${emptiesListNav}" class="container">
+	<section th:if="${displaySectionDTO.emptiesListNav}" class="container">
 		<div class="row">
 			<div class="col-lg-6 mx-auto">
 				<table class="table caption-top border-bottom">
@@ -209,7 +209,7 @@
 		</div>
 	</section>
 	
-	<section th:if="${createCargoListSelectNav}" id="list_select" class="container">
+	<section th:if="${displaySectionDTO.createCargoListSelectNav}" id="list_select" class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
 			<p>Please select the item numbers of products to be delivered and click the Submit button below!</p>
@@ -239,7 +239,7 @@
 		</div>
 	</section>
 	
-	<section th:if="${createCargoListMainNav}" class="container">
+	<section th:if="${displaySectionDTO.createCargoListMainNav}" class="container">
 		<div class="row">
 			<span class="text-center">Please note if delivered quatity rounded up to the smallest packaging unit.</span>
 
@@ -353,7 +353,7 @@
 		</div>
 	</section>
 
-	<section th:if="${modifyQuantityNav}" class="container">
+	<section th:if="${displaySectionDTO.modifyQuantityNav}" class="container">
 		<div class="row">
 			<div class="col-lg-4 mx-auto">
 			<h2>Requested quantity modification</h2><br>
