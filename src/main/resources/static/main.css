@@ -26,50 +26,11 @@ html {
 }
 
 /* ==== MENU STYLE ==== */
-
-.nav_link_background {
-  font-family: 'Raleway', sans-serif;
-  font-variant: small-caps;
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-top: 0.5rem;
-  background-color: rgba(255, 255, 255, .8);
-  width: 15rem;
-  padding-left: 0.5rem;
-  padding-top: 0.5rem;
-  border-radius: 0.25rem;
-}
-
-button {
-  margin-right: 2rem;
-  margin-top: 1rem;
-  background: transparent;
-  border: none;
-  outline: none !important;
-}
-
-.menu_button:focus {
-  box-shadow: none;
-}
-
-.menu_button {
-  background-color: rgba(255, 255, 255, .5);
-  width: 4rem;
-  height: 4rem;
-}
-
-@media (min-width: 768px) {
-
-  .menu_button {
-    width: 15rem;
-    height: 4rem;
-  }
-}
-
+/*
 #list_select li {
 	display: inline-block;
 	margin: .5rem 1rem;
-}
+}*/
 
 #list_select ul {
 	margin: 2rem;
