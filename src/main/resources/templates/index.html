@@ -16,8 +16,15 @@
 		<div class="row height_100">
 			<div class="col-md-8 my-auto mx-auto">
 				<div class="row">
-					<div class="col-md-12 login_border">
-						<span>Please note!</span><br>
+					<div class="col-md-12 text-center">
+						<h1>Truck Cargo Planner</h1><br><br>
+					</div>
+					<div class="col-md-12">
+						<h3>Please note!</h3>
+						<span>Do not use real names and email addresses within registration! The data provided will be deleted within a few.</span>
+					</div>
+					
+					<div class="col-md-12">
 						<span th:if="${loginError != null}" th:text="${loginError}"></span>
 						<span th:if="${registrationError != null}" th:text="${registrationError}"></span>
 					</div>
@@ -46,6 +53,10 @@
 						</form>
 					</div>
 				</div>
+			</div>
+			<div class="text-center"><br>
+				<small class="text-center">©2021 <i class="far fa-eye"></i> Tamas Fulop <i class="far fa-eye"></i> Email: tamas (dot) fulop (dot) eftomi (at) gmail (dot) com</small>
+				<br><small>version: 1.0</small>
 			</div>
 		</div>
 	</div>

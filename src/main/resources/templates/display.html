@@ -36,7 +36,7 @@
 				</div>
 				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
 					<form th:action="@{/emptiesList}" target="_blank">
-						<input type="submit" value="Empties list"/>
+						<input type="submit" value="Empties List"/>
 					</form>
 				</div>
 				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
@@ -62,18 +62,23 @@
 	<section th:if="${displaySectionDTO.aboutNav}" class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
+				<h3>Truck Cargo Planner</h3>
 				<h4>Motivation of the software</h4>
-				<p>The software operates in the field of bulk goods in the central warehouse of a small machine parts manufacturer and distributor.
-				The coordinator can make packing instructions and plans the cargo of the trucks arriving for delivery with usage of this software.
+				<p>The software operates in the field of bulk goods in the central warehouse of a machine parts distributor.
+				The coordinator can make packing instructions and do the cargo plan of the trucks arriving for delivery with usage of this software.
 				The items to be shipped have different packaging instructions.
 				An unlimited amount of different types of products and empties are available in the warehouse.</p>
-				<p>You can plan the cargo regarding cargo space, weigth and list of empties.</p>
+				<p>You can make the cargo plan regarding cargo space, different weigths and detailed list in the end.</p>
 				<h4>How the program is working?</h4>
-				<p>There are three helping table to help you to do the job. You can access all of this with the menu buttons: Packaging Policy, Packaging Instructions, Empties list</p>
-				<h5>Packaging Policy:</h5>
-				<p>Tartalmazza az ömlesztett áru csomagolására vonatkozó előírásokat.</p>
-				<h5>Packaging Instructions:</h5>
-				<h5>Empties list:</h5>
+				<p>There are three table to help you to do the cargo plan or check it what you done: Specifications, Packaging Instruction, Empties list.</p>
+				<h5>Specifications Menu</h5>
+				<p>It contains regulations for the packaging and loading of bulk goods.</p>
+				<h5>Packaging Instruction Menu</h5>
+				<p>This list includes packaging requirements for various machine parts regarding its type of empties and its quantities. In addition it contain requirement to place the goods on a pallet.</p>
+				<h5>Empties List Menu</h5>
+				<p>This list contains different types of empties and its names and its weights used for packaging.</p>
+				<h5>Create Cargo List Menu</h5>
+				<p>You can start the calculation and planning process here. This will drive you over the selection till the end result of calculation.</p>
 			</div>
 		</div>
 	</section>
@@ -83,28 +88,18 @@
 			<div class="col-lg-8 mx-auto">
 				
 				<h4>Specifications</h4>
-				<p>1. To be delevered quatity rounded up to the smallest packaging unit.<br>
-				2. Smallest packaging unit is box, lattice container or wooden chest.<br>
-				3. In case of whole pallet with plastic boxes you need to put lid on the top the boxes, because of the stackability.<br>
-				4. Pallets can only be stacked two levels high in the truck, the lower pallet must be stackable.<br>
-				5. In case of whole pallet with cardboard boxes must not  put lid on the top the boxes.<br>
-				6. In case of not whole pallet with boxes must not put lid on the top of the boxes.<br>
-				7. Lattic boxes and wooden boxes are stackable.<br>
-				8. Different items can not be packed together.<br>
-				9. All transport units must be wrapped in a circle wih foil.<br>
-				10. All plastic lid are suitable for the tops of all plastic boxes.
-				Information from empties:
-				pallets:<br>
-				Pal000 EUR place for Box002 or Box003, stackable<br>
-				Pal001 EUR wood pallet<br>
-				Pal002 EUR wood pallet + plastic lid, stackable<br>
-				Pal003 EUR plastic pallet + plastic lid, stackable<br>
-				Pal004 EUR plastic pallet + plastic lid, stackable<br>
-				boxes:<br>
-				Box001: cardboard box<br>
-				Box002: wooden chest<br>
-				Box003: lattice box<br>
-				Box004-Box014: plastic box</p>
+				<ol>
+					<li>To be delevered quatity rounded up to the smallest packaging unit.</li>
+					<li>Smallest packaging unit is a box, a lattice container or a wooden chest.</li>
+					<li>In case of whole pallet with plastic boxes you need to put lid on the top the boxes, because of the stackability.</li>
+					<li>Pallets can only be stacked two levels high in the truck, the lower pallet must be stackable.</li>
+					<li>In case of whole pallet with cardboard boxes must not  put lid on the top the boxes.</li>
+					<li>In case of not whole pallet with boxes must not put lid on the top of the boxes.</li>
+					<li>Lattic boxes and wooden boxes are stackable.</li>
+					<li>Different items can not be packed together.</li>
+					<li>All transport units must be wrapped in a circle wih foil.</li>
+					<li>All plastic lid are suitable for the tops of all plastic boxes.</li>
+				</ol>
 			</div>
 		</div>
 	</section>
@@ -220,6 +215,7 @@
 	<section th:if="${displaySectionDTO.createCargoListSelectNav}" id="list_select" class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
+			<h3>Truck Cargo Planner</h3>
 			<p>Please select the item numbers of products to be delivered and click the Submit button below!</p>
 				<form action="#" th:action="@{/createCargoListSelect}" th:object="${itemNumberSetDTO}" method="post">
 				<ul>
@@ -248,7 +244,7 @@
 	
 	<section th:if="${displaySectionDTO.createCargoListMainNav}" class="container">
 		<div class="row">
-			<span class="text-center">Please note if delivered quatity rounded up to the smallest packaging unit.</span>
+			<h3>Truck Cargo Planner</h3>
 
 			<div class="col-lg-5 mx-auto">
 				<table class="table caption-top border-bottom">
@@ -363,9 +359,10 @@
 	<section th:if="${displaySectionDTO.modifyQuantityNav}" class="container">
 		<div class="row">
 			<div class="col-lg-4 mx-auto">
-			<h2>Requested quantity modification</h2><br>
+			<h3>Truck Cargo Planner</h3>
+			<h5>Requested quantity modification</h5><br>
 			<span>Please enter the required quantity of the item.<br><br> Please note if delivered quatity rounded up to the smallest packaging unit.</span><br><br>
-			<span>Item number: </span><span th:text="${cargoItem.itemNumber}"></span>
+			<span>Item number: </span><strong><span th:text="${cargoItem.itemNumber}"></span></strong>
 			<form th:action="@{/modifyCargoItem}" th:object="${cargoItem}" method="POST">
 				<input type="hidden" th:field="*{id}">
 				<input type="hidden" th:field="*{itemNumber}">
@@ -377,6 +374,10 @@
 			</div>
 		</div>
 	</section>
+	<div class="text-center"><br>
+		<small class="text-center">©2021 <i class="far fa-eye"></i> Tamas Fulop <i class="far fa-eye"></i> Email: tamas (dot) fulop (dot) eftomi (at) gmail (dot) com</small>
+		<br><small>version: 1.0</small>
+	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
