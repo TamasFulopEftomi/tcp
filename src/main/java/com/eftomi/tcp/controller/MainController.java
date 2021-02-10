@@ -90,13 +90,13 @@ public class MainController {
 		return "display";
 	}
 	
-	@GetMapping("/packagingPolicy")
-	public String packagingPolicy(Model model, HttpSession session) {
+	@GetMapping("/specifications")
+	public String specifications(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		
 		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
-		displaySectionDTO.setPackagingPolicyNav(true);
+		displaySectionDTO.setSpecificationsNav(true);
 		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		return "display";

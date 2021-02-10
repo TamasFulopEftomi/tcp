@@ -3,20 +3,20 @@ package com.eftomi.tcp.dto;
 public class DisplaySectionDTO {
 	private boolean menuNav;
 	private boolean aboutNav;
-	private boolean packagingPolicyNav;
+	private boolean specificationsNav;
 	private boolean packagingInstructionNav;
 	private boolean emptiesListNav;
 	private boolean createCargoListSelectNav;
 	private boolean createCargoListMainNav;
 	private boolean modifyQuantityNav;
 
-	public DisplaySectionDTO(boolean menuNav, boolean aboutNav, boolean packagingPolicyNav,
+	public DisplaySectionDTO(boolean menuNav, boolean aboutNav, boolean specificationsNav,
 			boolean packagingInstructionNav, boolean emptiesListNav, boolean createCargoListSelectNav,
 			boolean createCargoListMainNav, boolean modifyQuantityNav) {
 		super();
 		this.menuNav = menuNav;
 		this.aboutNav = aboutNav;
-		this.packagingPolicyNav = packagingPolicyNav;
+		this.specificationsNav = specificationsNav;
 		this.packagingInstructionNav = packagingInstructionNav;
 		this.emptiesListNav = emptiesListNav;
 		this.createCargoListSelectNav = createCargoListSelectNav;
@@ -40,11 +40,11 @@ public class DisplaySectionDTO {
 	public void setAboutNav(boolean aboutNav) {
 		this.aboutNav = aboutNav;
 	}
-	public boolean isPackagingPolicyNav() {
-		return packagingPolicyNav;
+	public boolean isSpecificationsNav() {
+		return specificationsNav;
 	}
-	public void setPackagingPolicyNav(boolean packagingPolicyNav) {
-		this.packagingPolicyNav = packagingPolicyNav;
+	public void setSpecificationsNav(boolean specificationsNav) {
+		this.specificationsNav = specificationsNav;
 	}
 	public boolean isPackagingInstructionNav() {
 		return packagingInstructionNav;

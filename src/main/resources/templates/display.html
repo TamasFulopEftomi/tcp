@@ -25,8 +25,8 @@
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
 				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
-					<form th:action="@{/packagingPolicy}" target="_blank">
-						<input type="submit" value="Packaging Policy"/>
+					<form th:action="@{/specifications}" target="_blank">
+						<input type="submit" value="Specifications"/>
 					</form>
 				</div>
 				<div th:if="${displaySectionDTO.menuNav}" class="float-start">
@@ -62,7 +62,7 @@
 	<section th:if="${displaySectionDTO.aboutNav}" class="container">
 		<div class="row">
 			<div class="col-lg-12 mx-auto">
-				<h4>Main title</h4>
+				<h4>Motivation of the software</h4>
 				<p>The software operates in the field of bulk goods in the central warehouse of a small machine parts manufacturer and distributor.
 				The coordinator can make packing instructions and plans the cargo of the trucks arriving for delivery with usage of this software.
 				The items to be shipped have different packaging instructions.
@@ -71,18 +71,18 @@
 				<h4>How the program is working?</h4>
 				<p>There are three helping table to help you to do the job. You can access all of this with the menu buttons: Packaging Policy, Packaging Instructions, Empties list</p>
 				<h5>Packaging Policy:</h5>
-				<p>Contain all off the ....</p>
+				<p>Tartalmazza az ömlesztett áru csomagolására vonatkozó előírásokat.</p>
 				<h5>Packaging Instructions:</h5>
 				<h5>Empties list:</h5>
 			</div>
 		</div>
 	</section>
 	
-	<section th:if="${displaySectionDTO.packagingPolicyNav}" class="container">
+	<section th:if="${displaySectionDTO.specificationsNav}" class="container">
 		<div class="row">
 			<div class="col-lg-8 mx-auto">
 				
-				<h4>Packaging policy</h4>
+				<h4>Specifications</h4>
 				<p>1. To be delevered quatity rounded up to the smallest packaging unit.<br>
 				2. Smallest packaging unit is box, lattice container or wooden chest.<br>
 				3. In case of whole pallet with plastic boxes you need to put lid on the top the boxes, because of the stackability.<br>
