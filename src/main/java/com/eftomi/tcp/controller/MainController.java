@@ -125,7 +125,7 @@ public class MainController {
 		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
 		model.addAttribute("boxesAndContainersList", cargoService.boxesAndContainersList());
-		model.addAttribute("palletsAndRoofsList", cargoService.palletsAndRoofsList());
+		model.addAttribute("palletsAndLidsList", cargoService.palletsAndLidsList());
 		return "display";
 	}
 	

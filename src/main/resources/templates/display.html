@@ -61,12 +61,19 @@
 	
 	<section th:if="${displaySectionDTO.aboutNav}" class="container">
 		<div class="row">
-			<div class="col-lg-8 mx-auto">
-				
-			<p>The software operates in the field of bulk goods in the central warehouse of a small machine parts manufacturer and distributor.
+			<div class="col-lg-12 mx-auto">
+				<h4>Main title</h4>
+				<p>The software operates in the field of bulk goods in the central warehouse of a small machine parts manufacturer and distributor.
 				The coordinator can make packing instructions and plans the cargo of the trucks arriving for delivery with usage of this software.
 				The items to be shipped have different packaging instructions.
 				An unlimited amount of different types of products and empties are available in the warehouse.</p>
+				<p>You can plan the cargo regarding cargo space, weigth and list of empties.</p>
+				<h4>How the program is working?</h4>
+				<p>There are three helping table to help you to do the job. You can access all of this with the menu buttons: Packaging Policy, Packaging Instructions, Empties list</p>
+				<h5>Packaging Policy:</h5>
+				<p>Contain all off the ....</p>
+				<h5>Packaging Instructions:</h5>
+				<h5>Empties list:</h5>
 			</div>
 		</div>
 	</section>
@@ -78,20 +85,21 @@
 				<h4>Packaging policy</h4>
 				<p>1. To be delevered quatity rounded up to the smallest packaging unit.<br>
 				2. Smallest packaging unit is box, lattice box or wooden chest.<br>
-				3. In case of whole pallet with plastic boxes you need to put roof on the top the boxes, because of the stackability.<br>
+				3. In case of whole pallet with plastic boxes you need to put lid on the top the boxes, because of the stackability.<br>
 				4. Pallets can only be stacked two levels high in the truck, the lower pallet must be stackable.<br>
-				5. In case of whole pallet with cardboard boxes must not  put roof on the top the boxes.<br>
-				6. In case of not whole pallet with boxes must not put roof on the top of the boxes.<br>
+				5. In case of whole pallet with cardboard boxes must not  put lid on the top the boxes.<br>
+				6. In case of not whole pallet with boxes must not put lid on the top of the boxes.<br>
 				7. Lattic boxes and wooden boxes are stackable.<br>
 				8. Different items can not be packed together.<br>
 				9. All transport units must be wrapped in a circle wih foil.<br>
+				10. All plastic lid are suitable for the tops of all plastic boxes.
 				Information from empties:
 				pallets:<br>
 				Pal000 EUR place for Box002 or Box003, stackable<br>
 				Pal001 EUR wood pallet<br>
-				Pal002 EUR wood pallet + plastic roof, stackable<br>
-				Pal003 EUR plastic pallet + plastic roof, stackable<br>
-				Pal004 EUR plastic pallet + plastic roof, stackable<br>
+				Pal002 EUR wood pallet + plastic lid, stackable<br>
+				Pal003 EUR plastic pallet + plastic lid, stackable<br>
+				Pal004 EUR plastic pallet + plastic lid, stackable<br>
 				boxes:<br>
 				Box001: cardboard box<br>
 				Box002: wooden chest<br>
@@ -180,23 +188,23 @@
 			
 			<div class="col-lg-6 mx-auto">
 				<table class="table caption-top border-bottom">
-				<caption>Pallets and roofs list</caption>
+				<caption>Pallets and lids list</caption>
 					<thead>
 						<tr class="border-bottom">
 							<th>#</th>
 							<th>Type</th>
 							<th>Name</th>
 							<th>Pallet (kg/pc)</th>
-							<th>Roof (kg/pc)</th>
+							<th>Lid (kg/pc)</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="pallet,stat : ${palletsAndRoofsList}">
+						<tr th:each="pallet,stat : ${palletsAndLidsList}">
 							<td class="border-bottom" th:text="${stat.count}">1</td>
 							<td class="border-bottom" th:text="${pallet.palletType}">box001</td>
 							<td class="border-bottom" th:text="${pallet.palletName}">Cardboard Box</td>
 							<td class="border-bottom text-end" th:text="${pallet.palletWeight}">1.0</td>
-							<td class="border-bottom text-end" th:text="${pallet.roofWeight}">1.0</td>
+							<td class="border-bottom text-end" th:text="${pallet.lidWeight}">1.0</td>
 						</tr>
 						<tr th:remove="all">
 							<td>2</td>
@@ -224,7 +232,6 @@
 				</form><br>
 				<div th:if="${list}">
 					<p>You have selected out the following items for shipping: <strong><span th:text="${list}"></span></strong></p>
-
 					<p>If you want to deliver the goods you selected please click the "Add quantities" button, otherwise select new items and push submit button again!</p><br>
 					<div class="float-end">
 					<form th:action="@{/createCargoListQuantity}" method="post">

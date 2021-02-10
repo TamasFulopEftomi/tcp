@@ -16,17 +16,17 @@ public class Pallet {
 	private String palletType;
 	private String palletName;
 	private double palletWeight;
-	private double roofWeight;
+	private double lidWeight;
 	private boolean stackable;
 	@OneToMany(mappedBy = "pallet")
 	private List<Item> items;
 
-	public Pallet(String palletName, String palletType, double palletWeight, double roofWeight, boolean stackable) {
+	public Pallet(String palletName, String palletType, double palletWeight, double lidWeight, boolean stackable) {
 		super();
 		this.palletName = palletName;
 		this.palletType = palletType;
 		this.palletWeight = palletWeight;
-		this.roofWeight = roofWeight;
+		this.lidWeight = lidWeight;
 		this.stackable = stackable;
 	}
 
@@ -56,12 +56,12 @@ public class Pallet {
 		this.palletWeight = palletWeight;
 	}
 
-	public double getRoofWeight() {
-		return roofWeight;
+	public double getLidWeight() {
+		return lidWeight;
 	}
 
-	public void setRoofWeight(double roofWeight) {
-		this.roofWeight = roofWeight;
+	public void setLidWeight(double lidWeight) {
+		this.lidWeight = lidWeight;
 	}
 
 	public boolean isStackable() {

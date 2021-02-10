@@ -64,7 +64,7 @@ public class CargoService {
 		return boxDAO.findAll();
 	}
 	
-	public List<Pallet> palletsAndRoofsList() {
+	public List<Pallet> palletsAndLidsList() {
 		return palletDAO.findAll();
 	}
 	
@@ -159,9 +159,9 @@ public class CargoService {
 				int boxesOnPallet = boxesInRow * rowsOnPallet;
 				int numberOfWholePallets = boxesToBeDelivered / boxesOnPallet;
 				int numberOfNotWholePallets = (boxesToBeDelivered % boxesOnPallet == 0) ? 0 : 1;
-				double palletsAndRoofsWeight = (numberOfWholePallets + numberOfNotWholePallets) * 
-						item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getRoofWeight();
-				sumEmptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + palletsAndRoofsWeight;
+				double palletsAndLidsWeight = (numberOfWholePallets + numberOfNotWholePallets) * 
+						item.getPallet().getPalletWeight() + numberOfWholePallets * item.getPallet().getLidWeight();
+				sumEmptiesWeight += boxesToBeDelivered * item.getBox().getBoxWeight() + palletsAndLidsWeight;
 				
 				//calculate whole pallets and not whole pallets
 				sumOfWholePallets += numberOfWholePallets;
@@ -186,7 +186,7 @@ public class CargoService {
 					}
 				empties = addEmpties(empties, item.getBox().getBoxName(), boxesNumber);
 				empties = addEmpties(empties, item.getPallet().getPalletName(), palletsNumber);
-				empties = addEmpties(empties, "Plastic Roof", numberOfWholePalletsFromStackable);
+				empties = addEmpties(empties, "Plastic Lid", numberOfWholePalletsFromStackable);
 			} else {
 				throw new CargoItemNotFoundException(cargoItem.getId());
 			}
