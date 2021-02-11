@@ -218,8 +218,8 @@
 			<h3>Truck Cargo Planner</h3>
 			<p>Please select the item numbers of products to be delivered and click the Submit button below!</p>
 				<form action="#" th:action="@{/createCargoListSelect}" th:object="${itemNumberSetDTO}" method="post">
-				<ul class="m-3">
-					<li class="d-inline m-3" th:each="iMap : ${itemMap}">
+				<ul>
+					<li class="d-inline-block mx-4 my-2" th:each="iMap : ${itemMap}">
 						<input type="checkbox" th:field="*{itemNumberSet}" th:value="${iMap.key}">
 						<label for="${#ids.next('iMap')}" th:text="${iMap.value}">NR0001</label>
 					</li>

@@ -26,15 +26,6 @@ html {
 }
 
 /* ==== MENU STYLE ==== */
-/*
-#list_select li {
-	display: inline-block;
-	margin: .5rem 1rem;
-}*/
-
-#list_select ul {
-	margin: 2rem;
-}
 
 .light_green {
 	color: lightgreen;;
