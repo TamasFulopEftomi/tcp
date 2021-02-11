@@ -22,6 +22,7 @@ import com.eftomi.tcp.repository.ItemRepository;
 import com.eftomi.tcp.repository.PalletRepository;
 import com.eftomi.tcp.service.exception.CargoItemNotFoundException;
 import com.eftomi.tcp.service.exception.ItemNotFoundException;
+import com.sun.el.parser.ParseException;
 
 @Service
 public class CargoService {
@@ -86,7 +87,7 @@ public class CargoService {
 	public List<CargoItem> getAllCargoItems() {
 		return cargoItemDAO.findAll();
 	}
-
+	
 	public void clearCargoItem() {
 		cargoItemDAO.deleteAll();
 	}
@@ -143,7 +144,7 @@ public class CargoService {
 			Optional<Item> optItem = itemDAO.findByItemNo(cargoItem.getItemNumber());
 			if (optItem.isPresent()) {
 				Item item = optItem.get();
-
+				
 				//Helping variables for speed
 				int qtyTBD = cargoItem.getQtyToBeDelivered();
 				int pcsInBox = item.getPcsInBox();
@@ -153,7 +154,7 @@ public class CargoService {
 				
 				//calculate netto weight
 				sumNettoWeight += qtyTBD * item.getItemWeight();
-
+				
 				//calculate empties weight
 				int boxesToBeDelivered = qtyTBD / pcsInBox;
 				int boxesOnPallet = boxesInRow * rowsOnPallet;
@@ -166,7 +167,7 @@ public class CargoService {
 				//calculate whole pallets and not whole pallets
 				sumOfWholePallets += numberOfWholePallets;
 				sumOfNotWholePallets += numberOfNotWholePallets;
-
+				
 				//calculate cargo space I.
 				int boxesToBeDeliveredOnStackablePallet = 0;
 				int boxesOnStackablePallet = 0;
@@ -175,7 +176,7 @@ public class CargoService {
 					boxesOnStackablePallet = boxesInRow * rowsOnPallet;
 					sumNumberOfStackablePallets += boxesToBeDeliveredOnStackablePallet / boxesOnStackablePallet;
 					}
-
+				
 				//prepare and create empties list
 				int boxesNumber = qtyTBD / pcsInBox;
 				int pcsOnPallet = pcsInBox * boxesInRow * rowsOnPallet;
@@ -191,24 +192,24 @@ public class CargoService {
 				throw new CargoItemNotFoundException(cargoItem.getId());
 			}
 		}
-
+		
 		//calculate grossWeight
 		double bruttoWeight = sumNettoWeight + sumEmptiesWeight;
-
+		
 		//calculate number of pallets
 		int sumNumberOfPallets = sumOfWholePallets + sumOfNotWholePallets;
-
+		
 		//calculate cargo space II.
 		int half;
 		int subtraction;
 		half = sumNumberOfPallets / 2;
 		subtraction = half < sumNumberOfStackablePallets ? half : sumNumberOfStackablePallets;
 		int loadingSpace = sumNumberOfPallets - subtraction;
-
+		
 		CargoListDTO cargoListDTO = new CargoListDTO();
-		cargoListDTO.setNettoWeight(sumNettoWeight);
-		cargoListDTO.setEmptiesWeight(sumEmptiesWeight);
-		cargoListDTO.setBruttoWeight(bruttoWeight);
+		cargoListDTO.setNettoWeight(roundToOneDecimalPlace(sumNettoWeight));
+		cargoListDTO.setEmptiesWeight(roundToOneDecimalPlace(sumEmptiesWeight));
+		cargoListDTO.setBruttoWeight(roundToOneDecimalPlace(bruttoWeight));
 		cargoListDTO.setNumberOfNotWholePallets(sumOfNotWholePallets);
 		cargoListDTO.setNumberOfWholePallets(sumOfWholePallets);
 		cargoListDTO.setNumberOfPallets(sumNumberOfPallets);
@@ -216,7 +217,11 @@ public class CargoService {
 		cargoListDTO.setEmpties(empties);
 		return cargoListDTO;
 	}
-
+	
+	private double roundToOneDecimalPlace(double amount) {
+		return (double)(Math.round(amount * 10)) / 10;
+	}
+	
 	private Map<String, Integer> addEmpties(Map<String, Integer> emptiesMap, String empties, Integer qty) {
 		Map<String, Integer> tempMap;
 		tempMap= emptiesMap;
@@ -230,5 +235,16 @@ public class CargoService {
 		return tempMap;
 	}
 	
+	public boolean validQuantity(String qty) {
+		if (qty.matches("[0-9]+")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public int parseQuantity(String qty) throws ParseException {
+		return Integer.parseInt(qty);
+	}
 }
 

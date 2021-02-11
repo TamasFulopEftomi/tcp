@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.eftomi.tcp.dto.CargoItemDTO;
 import com.eftomi.tcp.dto.CargoListDTO;
 import com.eftomi.tcp.dto.DisplaySectionDTO;
 import com.eftomi.tcp.dto.ItemNumberSetDTO;
@@ -21,6 +22,7 @@ import com.eftomi.tcp.entity.CargoItem;
 import com.eftomi.tcp.entity.User;
 import com.eftomi.tcp.service.CargoService;
 import com.eftomi.tcp.service.UserService;
+import com.sun.el.parser.ParseException;
 
 @Controller
 public class MainController {
@@ -141,6 +143,7 @@ public class MainController {
 		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
 		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
+		session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
 		return "display";
 	}
 	
@@ -165,7 +168,14 @@ public class MainController {
 	}
 	
 	@PostMapping("/createCargoListQuantity")
-	public String createCargoListQuantity(Model model, HttpSession session ) {
+	public String createCargoListQuantity(HttpSession session) {
+		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
+		cargoService.cargoListCreate(itemNumberSetDTO.getItemNumberSet());
+		return "redirect:/cargoListPlanner";
+	}
+	
+	@GetMapping("/cargoListPlanner")
+	public String cargoListPlanner(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		
@@ -174,14 +184,15 @@ public class MainController {
 		displaySectionDTO.setCreateCargoListMainNav(true);
 		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
-		ItemNumberSetDTO itemNumberSetDTO = (ItemNumberSetDTO) session.getAttribute("itemNumberSetDTO");
-		cargoService.cargoListCreate(itemNumberSetDTO.getItemNumberSet());
+		
 		List<CargoItem> cargoItemList = cargoService.getAllCargoItems();
 		CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 		model.addAttribute("cargoItemList", cargoItemList);
 		model.addAttribute("cargoListDTO", cargoListDTO);
+		model.addAttribute("qtyError", session.getAttribute("qtyError"));
 		return "display";
 	}
+	
 	
 	@PostMapping("/modifyQuantity")
 	public String modifyQuantity(Model model, int id, HttpSession session) {
@@ -195,29 +206,46 @@ public class MainController {
 		Optional<CargoItem> optCargoItem = cargoService.getCargoItem(id);
 		if (optCargoItem.isPresent()) {
 			CargoItem cargoItem = optCargoItem.get();
-				model.addAttribute("cargoItem", cargoItem);
+			CargoItemDTO cargoItemDTO = new CargoItemDTO();
+			cargoItemDTO.setId(cargoItem.getId());
+			cargoItemDTO.setItemNumber(cargoItem.getItemNumber());
+			cargoItemDTO.setQtyNeeds(cargoItem.getQtyNeeds());
+			cargoItemDTO.setQtyToBeDelivered(cargoItem.getQtyToBeDelivered());
+				model.addAttribute("cargoItemDTO", cargoItemDTO);
 				return "display";
 			} else {
-		return null;
+				return "/";
 			}
 	}
 	
 	@PostMapping("/modifyCargoItem")
-	public String modifyCargoItem(Model model, HttpSession session, CargoItem cargoItem) {
+	public String modifyCargoItem(Model model, HttpSession session, CargoItemDTO cargoItemDTO) throws ParseException {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
-		
-		DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
-		displaySectionDTO.setMenuNav(true);
-		displaySectionDTO.setCreateCargoListMainNav(true);
-		model.addAttribute("displaySectionDTO", displaySectionDTO);
-		
-		cargoService.calculateCargoItemQuantities(cargoItem);
-		List<CargoItem> cargoItemList = cargoService.getAllCargoItems();
-		CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
-		model.addAttribute("cargoItemList", cargoItemList);
-		model.addAttribute("cargoListDTO", cargoListDTO);
-		return "display";
+		if (cargoService.validQuantity(cargoItemDTO.getQtyNeedsString())) {
+			CargoItem cargoItem = new CargoItem();
+			cargoItem.setId(cargoItemDTO.getId());
+			cargoItem.setItemNumber(cargoItemDTO.getItemNumber());
+			cargoItem.setQtyNeeds(cargoService.parseQuantity(cargoItemDTO.getQtyNeedsString()));
+			cargoItem.setQtyToBeDelivered(cargoItemDTO.getQtyToBeDelivered());
+			
+			DisplaySectionDTO displaySectionDTO = new DisplaySectionDTO();
+			displaySectionDTO.setMenuNav(true);
+			displaySectionDTO.setCreateCargoListMainNav(true);
+			model.addAttribute("displaySectionDTO", displaySectionDTO);
+			
+			cargoService.calculateCargoItemQuantities(cargoItem);
+			List<CargoItem> cargoItemList = cargoService.getAllCargoItems();
+			CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
+			model.addAttribute("cargoItemList", cargoItemList);
+			model.addAttribute("cargoListDTO", cargoListDTO);
+			session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
+			return "display";
+		} else {
+			session.setAttribute("qtyError", "To add the required quantity click the \"Qty mod\" button in the last column "
+					+ "next to the selected Item Number and enter a positive integer on the form on the next page!");
+			return "redirect:/cargoListPlanner";
+		}
 		
 	}
 	
