@@ -14,12 +14,14 @@ public class UserService {
 	@Autowired
 	private UserRepository userDAO;
 	
-	public boolean registration(String name, String email, String password) {	//check data!
+	public boolean registration(String name, String email, String password) {
 		Optional<User> optUser = userDAO.findByEmail(email);
-		if (optUser.isEmpty()) {
+		if (optUser.isEmpty() && valid(name, email, password)) {
 			userDAO.save(new User(name, email, password));
+			return true;
+		} else {
+			return false;
 		}
-		return true;
 	}
 	
 	public boolean login(String email, String password) {
@@ -29,5 +31,13 @@ public class UserService {
 
 	public Optional<User> getUser(String email) {
 		return userDAO.findByEmail(email);
+	}
+	
+	private boolean valid(String name, String email, String password) {
+		if (email.matches("[a-zA-Z0-9.@_]+") && email.contains("@") && email.contains(".") && password.length() > 2 && name.length() > 2) {
+			return true;
+		} else {
+			return false;  //Regisztráció ellenőrzés kikapcsolása: true.
+		}
 	}
 }

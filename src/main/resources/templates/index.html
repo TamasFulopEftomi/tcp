@@ -14,22 +14,24 @@
 <body class="height_100">
 	<div class="container height_100">
 		<div class="row height_100">
-			<div class="col-md-8 my-auto mx-auto">
+			<div class="col-md-10 my-auto mx-auto">
 				<div class="row">
-					<div class="col-md-12 text-center">
+					<div class="text-center">
 						<h1>Truck Cargo Planner</h1><br><br>
 					</div>
-					<div class="col-md-12">
+					<div>
 						<h3>Please note!</h3>
 						<span>Do not use real names and email addresses within registration! The data provided will be deleted within a few.</span>
 					</div>
 					
-					<div class="col-md-12">
-						<span th:if="${loginError != null}" th:text="${loginError}"></span>
-						<span th:if="${registrationError != null}" th:text="${registrationError}"></span>
+					<div class="col-sm-12">
+						<h6 class="text-danger" th:if="${loginError != null}" th:text="${loginError}"></h6>
+						<h6 class="text-danger" th:if="${registrationError != null}" th:text="${registrationError}"></h6>
 					</div>
-
-					<div class="col-md-12 col-lg-6 login_border">
+				</div>
+				
+				<div class="row mx-auto">
+					<div class="col-md-12 m-3 col-lg-5 login_border">
 						<h2>Login</h2>
 						<form th:action="@{/index}" th:object="${loginDTO}" method="POST">
 							<label for="email">Email:</label><br>
@@ -40,7 +42,7 @@
 						</form>
 					</div>
 
-					<div class="col-md-12 col-lg-6 login_border">
+					<div class="col-md-12 m-3 col-lg-5 login_border">
 						<h2>Registration</h2>
 						<form th:action="@{/registration}" th:object="${registrationDTO}" method="POST">
 							<label for="name">Name:</label><br>
@@ -56,7 +58,7 @@
 			</div>
 			<div class="text-center"><br>
 				<small class="text-center">©2021 <i class="far fa-eye"></i> Tamas Fulop <i class="far fa-eye"></i> Email: tamas (dot) fulop (dot) eftomi (at) gmail (dot) com</small>
-				<br><small>version: 1.1</small>
+				<br><small>version: 1.2</small>
 			</div>
 		</div>
 	</div>

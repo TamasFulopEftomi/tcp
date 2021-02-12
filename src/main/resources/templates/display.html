@@ -54,7 +54,7 @@
 						<input type="submit" value="Logout"/>
 					</form>
 				</div>
-				<div class="float-end"><span>You are logged in as: </span><span th:text="${username}"></span></div>
+				<div class="float-end mx-2 my-1"><span>You are logged in as: </span><strong><span th:text="${username}"></span></strong></div>
 			</div>
 		</div>
 	</section>
@@ -247,7 +247,8 @@
 			<h3>Truck Cargo Planner</h3>
 
 			<div class="col-lg-5 mx-auto">
-			<h6 th:if="${qtyError}" th:text="${qtyError}" class="text-center text-danger">For adding the required quantity click the "Qty mod" button and enter one positive whole number!</h6>
+			<p>To add the required quantity click the "Qty mod" button in the last column next to the selected Item Number.</p>
+			<h5 th:if="${qtyError}" th:text="${qtyError}" class="text-center text-danger">Please enter a positive integer on the form on the next page!</h5>
 				<table class="table caption-top border-bottom">
 				<caption>Items To Be Delivered</caption>
 					<thead>
@@ -264,7 +265,7 @@
 							<td th:text="${stat.count}">1</td>
 							<td th:text="*{itemNumber}">Nr0001</td>
 							<td class="text-end" th:text="*{qtyNeeds}">0</td>
-							<td class="text-end" th:text="*{qtyToBeDelivered}">0</td>
+							<td class="text-end" ><strong><span th:text="*{qtyToBeDelivered}">0</span></strong></td>
 							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Qty mod"/></form></td>  <!-- Need to be post! -->
 						</tr>
 						<tr th:remove="all">
@@ -363,14 +364,14 @@
 			<h3>Truck Cargo Planner</h3>
 			<h5>Requested quantity modification</h5><br>
 			<p>Please note if delivered quatity rounded up to the smallest packaging unit.</p>
-			<h6 class="text-center text-danger">Please enter a positive integer as requested shipping quantity!</h6>
+			<h6 class="text-center">Please enter a positive integer as requested shipping quantity!</h6>
 			<span>Item number: </span><strong><span th:text="${cargoItemDTO.itemNumber}"></span></strong>
 			<form th:action="@{/modifyCargoItem}" th:object="${cargoItemDTO}" method="post">  <!-- Need to be post! -->
 				<input type="hidden" th:field="*{id}">
 				<input type="hidden" th:field="*{itemNumber}">
 				<input type="hidden" th:field="*{qtyToBeDelivered}">
 				<label for="quantity">Quantity:</label>
-				<input type="text" th:field="*{qtyNeedsString}" placeholder="0" ><br>
+				<input type="text" th:field="*{qtyNeedsString}"><br>
 				<input type="submit" value="Ok">
 			</form>
 			</div>
@@ -378,7 +379,7 @@
 	</section>
 	<div class="text-center"><br>
 		<small class="text-center">©2021 <i class="far fa-eye"></i> Tamas Fulop <i class="far fa-eye"></i> Email: tamas (dot) fulop (dot) eftomi (at) gmail (dot) com</small>
-		<br><small>version: 1.1</small>
+		<br><small>version: 1.2</small>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

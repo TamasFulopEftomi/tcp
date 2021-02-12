@@ -73,7 +73,7 @@ public class CargoService {
 		List<Item> itemList = getAllItems();
 		Map<String, String> itemNumberMap = new TreeMap<>();
 		for (Item item : itemList) {
-			itemNumberMap.put(item.getItemNo(), item.getItemNo());  //expandable fe.: with cross reference
+			itemNumberMap.put(item.getItemNo(), item.getItemNo());
 		}
 		return itemNumberMap;
 	}

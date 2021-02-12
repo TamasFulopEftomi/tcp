@@ -22,6 +22,7 @@ import com.eftomi.tcp.entity.CargoItem;
 import com.eftomi.tcp.entity.User;
 import com.eftomi.tcp.service.CargoService;
 import com.eftomi.tcp.service.UserService;
+import com.eftomi.tcp.service.exception.UserNotFoundException;
 import com.sun.el.parser.ParseException;
 
 @Controller
@@ -48,11 +49,11 @@ public class MainController {
 			if (optUser.isPresent()) {
 				session.setAttribute("username", optUser.get().getName());
 			} else {
-				// exception handling
+				throw new UserNotFoundException("N/A");
 			}
 			return "redirect:/display";
 		} else {
-			model.addAttribute("loginError", String.format("Email address %s or it's password is not valid!", loginDTO.getEmail()));
+			model.addAttribute("loginError", String.format("Email address %s or password is incorrect!", loginDTO.getEmail()));
 			model.addAttribute("loginDTO", new LoginDTO());
 			model.addAttribute("registrationDTO", new RegistrationDTO());
 			return "index";
@@ -72,7 +73,8 @@ public class MainController {
 			session.setAttribute("username", registrationDTO.getName());
 			return "redirect:/display";
 		} else {
-			model.addAttribute("registrationError", String.format("(s)", "Az email létezik vagy nem felel meg az előírásoknak."));
+			model.addAttribute("registrationError", String.format("Email address %s already exists in the database or it does not meet the email "
+					+ "address format requirements or the name or the password field length shorter than 3 character!", registrationDTO.getEmail()));
 			model.addAttribute("loginDTO", new LoginDTO());
 			model.addAttribute("registrationDTO", new RegistrationDTO());
 			return "index";
@@ -211,6 +213,7 @@ public class MainController {
 			cargoItemDTO.setItemNumber(cargoItem.getItemNumber());
 			cargoItemDTO.setQtyNeeds(cargoItem.getQtyNeeds());
 			cargoItemDTO.setQtyToBeDelivered(cargoItem.getQtyToBeDelivered());
+			cargoItemDTO.setQtyNeedsString(cargoItem.getQtyNeeds() + "");
 				model.addAttribute("cargoItemDTO", cargoItemDTO);
 				return "display";
 			} else {
@@ -242,8 +245,7 @@ public class MainController {
 			session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
 			return "display";
 		} else {
-			session.setAttribute("qtyError", "To add the required quantity click the \"Qty mod\" button in the last column "
-					+ "next to the selected Item Number and enter a positive integer on the form on the next page!");
+			session.setAttribute("qtyError", "Please enter a positive integer on the form on the next page!");
 			return "redirect:/cargoListPlanner";
 		}
 		
