@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,7 +146,7 @@ public class MainController {
 		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
 		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
-		session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
+//		session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
 		return "display";
 	}
 	
@@ -177,7 +178,7 @@ public class MainController {
 	}
 	
 	@GetMapping("/cargoListPlanner")
-	public String cargoListPlanner(Model model, HttpSession session) {
+	public String cargoListPlanner(Model model, HttpSession session, HttpServletRequest request) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		
@@ -186,15 +187,14 @@ public class MainController {
 		displaySectionDTO.setCreateCargoListMainNav(true);
 		model.addAttribute("displaySectionDTO", displaySectionDTO);
 		
-		
 		List<CargoItem> cargoItemList = cargoService.getAllCargoItems();
 		CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 		model.addAttribute("cargoItemList", cargoItemList);
 		model.addAttribute("cargoListDTO", cargoListDTO);
-		model.addAttribute("qtyError", session.getAttribute("qtyError"));
+		model.addAttribute("qtyError", request.getAttribute("qtyError"));
+//		model.addAttribute("qtyError", session.getAttribute("qtyError"));
 		return "display";
 	}
-	
 	
 	@PostMapping("/modifyQuantity")
 	public String modifyQuantity(Model model, int id, HttpSession session) {
@@ -222,7 +222,7 @@ public class MainController {
 	}
 	
 	@PostMapping("/modifyCargoItem")
-	public String modifyCargoItem(Model model, HttpSession session, CargoItemDTO cargoItemDTO) throws ParseException {
+	public String modifyCargoItem(Model model, HttpSession session, CargoItemDTO cargoItemDTO, HttpServletRequest request) throws ParseException {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		if (cargoService.validQuantity(cargoItemDTO.getQtyNeedsString())) {
@@ -242,10 +242,11 @@ public class MainController {
 			CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 			model.addAttribute("cargoItemList", cargoItemList);
 			model.addAttribute("cargoListDTO", cargoListDTO);
-			session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
+//			session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
 			return "display";
 		} else {
-			session.setAttribute("qtyError", "Please enter a positive integer on the form on the next page!");
+			request.setAttribute("qtyError", "Please enter a positive integer on the form on the next page!");
+//			session.setAttribute("qtyError", "Please enter a positive integer on the form on the next page!");
 			return "redirect:/cargoListPlanner";
 		}
 		
