@@ -146,7 +146,7 @@ public class MainController {
 		cargoService.clearCargoItem();
 		model.addAttribute("itemMap", cargoService.getItemNumberMap());
 		model.addAttribute("itemNumberSetDTO", new ItemNumberSetDTO());
-//		session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
+		session.setAttribute("qtyError", null);
 		return "display";
 	}
 	
@@ -178,7 +178,7 @@ public class MainController {
 	}
 	
 	@GetMapping("/cargoListPlanner")
-	public String cargoListPlanner(Model model, HttpSession session, HttpServletRequest request) {
+	public String cargoListPlanner(Model model, HttpSession session) {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		
@@ -191,8 +191,7 @@ public class MainController {
 		CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 		model.addAttribute("cargoItemList", cargoItemList);
 		model.addAttribute("cargoListDTO", cargoListDTO);
-		model.addAttribute("qtyError", request.getAttribute("qtyError"));
-//		model.addAttribute("qtyError", session.getAttribute("qtyError"));
+		model.addAttribute("qtyError", session.getAttribute("qtyError"));
 		return "display";
 	}
 	
@@ -222,7 +221,7 @@ public class MainController {
 	}
 	
 	@PostMapping("/modifyCargoItem")
-	public String modifyCargoItem(Model model, HttpSession session, CargoItemDTO cargoItemDTO, HttpServletRequest request) throws ParseException {
+	public String modifyCargoItem(Model model, HttpSession session, CargoItemDTO cargoItemDTO) throws ParseException {
 		String username = (String) session.getAttribute("username");
 		model.addAttribute("username", username);
 		if (cargoService.validQuantity(cargoItemDTO.getQtyNeedsString())) {
@@ -242,11 +241,10 @@ public class MainController {
 			CargoListDTO cargoListDTO = cargoService.calculateCargo(cargoItemList);
 			model.addAttribute("cargoItemList", cargoItemList);
 			model.addAttribute("cargoListDTO", cargoListDTO);
-//			session.setAttribute("qtyError", null);  // törölni kell, ha a "request" működik
+			session.setAttribute("qtyError", null);
 			return "display";
 		} else {
-			request.setAttribute("qtyError", "Please enter a positive integer on the form on the next page!");
-//			session.setAttribute("qtyError", "Please enter a positive integer on the form on the next page!");
+			session.setAttribute("qtyError", "Please enter a positive integer on the form on the Change Requested Quantity page!");
 			return "redirect:/cargoListPlanner";
 		}
 		

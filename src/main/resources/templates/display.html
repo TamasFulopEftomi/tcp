@@ -247,7 +247,7 @@
 			<h3>Truck Cargo Planner</h3>
 
 			<div class="col-lg-5 mx-auto">
-			<p>To add the required quantity click the "Qty mod" button in the last column next to the selected Item Number.</p>
+			<p>To add the required quantity click the "Change qty" button in the last column next to the selected Item Number.</p>
 			<h5 th:if="${qtyError}" th:text="${qtyError}" class="text-center text-danger">Please enter a positive integer on the form on the next page!</h5>
 				<table class="table caption-top border-bottom">
 				<caption>Items To Be Delivered</caption>
@@ -266,7 +266,7 @@
 							<td th:text="*{itemNumber}">Nr0001</td>
 							<td class="text-end" th:text="*{qtyNeeds}">0</td>
 							<td class="text-end" ><strong><span th:text="*{qtyToBeDelivered}">0</span></strong></td>
-							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Qty mod"/></form></td>  <!-- Need to be post! -->
+							<td class="text-center"><form th:action="@{/modifyQuantity(id=${item.id})}" method="post"><input type="submit" value="Change qty"/></form></td>  <!-- Need to be post! -->
 						</tr>
 						<tr th:remove="all">
 							<td>2</td>
@@ -362,7 +362,7 @@
 		<div class="row">
 			<div class="col-lg-4 mx-auto">
 			<h3>Truck Cargo Planner</h3>
-			<h5>Requested quantity modification</h5><br>
+			<h5>Change Requested Quantity</h5><br>
 			<p>Please note if delivered quatity rounded up to the smallest packaging unit.</p>
 			<h6 class="text-center">Please enter a positive integer as requested shipping quantity!</h6>
 			<span>Item number: </span><strong><span th:text="${cargoItemDTO.itemNumber}"></span></strong>
@@ -379,7 +379,7 @@
 	</section>
 	<div class="text-center"><br>
 		<small class="text-center">©2021 <i class="far fa-eye"></i> Tamas Fulop <i class="far fa-eye"></i> Email: tamas (dot) fulop (dot) eftomi (at) gmail (dot) com</small>
-		<br><small>version: 1.2</small>
+		<br><small>version: 1.3</small>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
