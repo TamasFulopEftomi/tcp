@@ -37,7 +37,7 @@ public class UserService {
 		if (email.matches("[a-zA-Z0-9.@_]+") && email.contains("@") && email.contains(".") && password.length() > 2 && name.length() > 2) {
 			return true;
 		} else {
-			return true;  //Regisztráció ellenőrzés kikapcsolása: true.
+			return false;  //Regisztráció ellenőrzés kikapcsolása: true.
 		}
 	}
 }
