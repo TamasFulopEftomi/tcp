@@ -36,16 +36,14 @@
 	<logger name="org.hibernate.SQL" level="DEBUG"/>
 	<logger name="org.springframework.boot.context.config" level="DEBUG"/>
 	<logger name="com.thoughtworks.xstream" level="OFF"/>
-
-
-	<!-- Application specific loggers -->
+	<logger name="org.springframework.transaction.interceptor" level="TRACE"/>
 	
+	
+	<!-- Application specific loggers -->
 	<logger name="com.eftomi.tcp" level="DEBUG" additivity="false">
 		<appender-ref ref="application-message"/>
 	</logger>
 
-	<logger name="org.springframework.transaction.interceptor" level="TRACE"/>
-	
 	<!--
 	<logger name="org.springframework.orm.jpa" level="TRACE"/>
 	<logger name="org.springframework.security.web.context" level="DEBUG"/>
