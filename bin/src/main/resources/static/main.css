@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+
+/*==== GENERAL STYLES ==== */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: calc(1rem + .2vw);
+  height: 100%;
+}
+
+.height_100 {
+  height: 100%
+}
+
+/* ==== LOGIN STYLE ==== */
+
+.login_border {
+  border: 0.0625rem solid grey;
+  border-radius: 0.3125rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+/* ==== MENU STYLE ==== */
+
+.light_green {
+	color: lightgreen;;
+}
+
+.silver {
+	color: silver;
+}
+
+.orange {
+	color: orange;
+}
+
+.light_blue {
+	color: lightblue;
+}
+
+.red {
+	color: red;
+}
+
+.grey {
+	color: grey;
+}
+
+.green {
+	color: green;
+}
+
+.brown {
+	color: brown;
+}
+
+.blue {
+	color: blue;
+}
+
+.purple {
+	color: purple;
+}
+
+.black {
+	color: black;
+}
