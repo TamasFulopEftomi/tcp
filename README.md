@@ -24,6 +24,6 @@ Empties List Menu:
 Create Cargo List Menu:
 - You can start the calculation and planning process here. This will drive you over the selection till the end result of calculation.
 
-Software version: 1.2 Created by Tamas Fulop email: tamas.fulop.eftomi@gmail.com
+Software version: 1.3 Created by Tamas Fulop email: tamas.fulop.eftomi@gmail.com
 
-You can find it on the web:  http://tcp.eftomi.com/
+Spring with maven.
